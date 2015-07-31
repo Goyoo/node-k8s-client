@@ -45,4 +45,3 @@ describe('kubectl',function()
 		})
 	})
 })
-

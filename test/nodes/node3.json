@@ -1,0 +1,13 @@
+{
+    "kind": "Node",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "192.168.10.13",
+        "labels": {
+            "kubernetes.io/hostname": "192.168.10.13"
+        }
+    },
+    "spec": {
+        "externalID": "192.168.10.13"
+    }
+}

@@ -15,29 +15,6 @@ describe('kubectl rc',function()
 {
 	this.timeout(1000000)
 	
-	// it('rc update', function(done){
-	// 	Kubectl.rc.update(path.join(__dirname, '/rc/nginx-rc.yaml'), function(err, data){
-	// 		console.log(err, data)
-	// 		done()
-	// 	})
-	// })
-	
-	// return
-	// it('rc rolling-update file', function(done){
-	// 	Kubectl.rc.rollingUpdateByFile('nginx', path.join(__dirname, '/rc/nginx-rc.yaml'), function(err, data){
-	// 		console.log(err, data)
-	// 		done()
-	// 	})
-	// })
-	
-	// it('rc rolling-update', function(done){
-	// 	Kubectl.rc.rollingUpdate('nginx2', 'image:v2', function(err, data){
-	// 		console.log(err, data)
-	// 		done()
-	// 	})
-	// })
-	
-	// return 
 	it('get rc list', function(done)
 	{
 		kubectl.rc.list(function(err, data){
@@ -54,33 +31,47 @@ describe('kubectl rc',function()
 		})
 	})
 	
-	it('get a rc', function(done)
+	it('get a rc helloworld-v1', function(done)
 	{
-		kubectl.rc.get('helloworld', function(err, data){
-			assert(!err && data.metadata.name === 'helloworld')
+		kubectl.rc.get('helloworld-v1', function(err, data){
+			assert(!err && data.metadata.name === 'helloworld-v1')
 			done()
 		})
 	})
 	
-	it('update rc image', function(done){
-		kubectl.rc.rollingUpdate('helloworld', 'dhub.yunpro.cn/junjun16818/hello-node', function(err, data){
-			console.log(data)
-			done()
+	it('scale rc', function(done){
+		kubectl.rc.scale('helloworld-v1', 1, function(err, data){
+			done(err)
 		})
 	})
 	
-	it('update rc image', function(done){
-		kubectl.rc.rollingUpdateByFile('helloworld', 'dhub.yunpro.cn/junjun16818/hello-node', function(err, data){
-			console.log(data)
-			done()
+	it('update rc by file', function(done){
+		kubectl.rc.rollingUpdateByFile('helloworld-v1', path.join(__dirname, '/rc/helloworld-v2.yaml'), function(err, data){
+			assert(!err)
+			done(err)
+		})
+	})
+	
+	it('get a rc helloworld-v2', function(done)
+	{
+		kubectl.rc.get('helloworld-v2', function(err, data){
+			assert(!err && data.metadata.name === 'helloworld-v2')
+			done(err)
+		})
+	})
+	
+	it('update rc by image', function(done){
+		kubectl.rc.rollingUpdate('helloworld-v2', 'dhub.yunpro.cn/junjun16818/hello-node', function(err, data){
+			assert(!err)
+			done(err)
 		})
 	})
 	
 	it('delete a rc', function(done)
 	{
-		kubectl.rc.delete('nginx', function(err, data){
+		kubectl.rc.delete('helloworld-v2', function(err, data){
 			assert(!err)
-			done()
+			done(err)
 		})
 	})
 })
