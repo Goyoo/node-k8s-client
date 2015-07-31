@@ -103,7 +103,7 @@ kubectl.rc.delete('nginx', function(err, data){
 
 ```
 
-## rolling-update form image
+## rolling-update from image
 
 ```js
 kubectl.rc.rollingUpdate('nginx', 'nginx:vserion', function(err, data){
@@ -113,7 +113,7 @@ kubectl.rc.rollingUpdate('nginx', 'nginx:vserion', function(err, data){
 
 ```
 
-## rolling-update form file
+## rolling-update from file
 
 ```js
 kubectl.rc.rollingUpdateByFile('nginx', '/:path/rc/nginx-v2.yaml', function(err, data){
