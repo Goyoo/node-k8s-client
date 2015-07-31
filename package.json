@@ -1,7 +1,14 @@
 {
   "name": "k8s",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goyoo/node-kubernetes-clinet.git"
+  },
+  "bugs": {
+    "url": "http://github.com/goyoo/node-kubernetes-clinet/issues"
+  },
   "main": "index.js",
   "directories": {
     "test": "test"

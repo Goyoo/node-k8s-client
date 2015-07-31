@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/mocha/mocha.d.ts"/>
 var expect = require('chai').expect
-	, K8s = require('../index.js')
+	, K8s = require('k8s')
 	, fs = require('fs')
 	, assert = require('chai').assert
 
@@ -27,9 +27,10 @@ describe('replicationcontrollers',function()
 			console.log(data.type, data.object.status.conditions, '\n', data.object.status.containerStatuses && data.object.status.containerStatuses[0].state)
 			// done(err)
 		})
+		
+		done()
 	})
 	
-	return 
 	it('test api POST -> create rc', function(done){
 		var rc = require('./rc/nginx-rc.json')
 		kubeapi.post('namespaces/default/replicationcontrollers', rc, function(err, data){
@@ -68,7 +69,7 @@ describe('replicationcontrollers',function()
 	// 		})
 	// 	})
 	// })
-		
+	
 	it('test api DELETE -> delete rc', function(done){
 		kubeapi.delete('namespaces/default/replicationcontrollers/nginx', function(err, data){
 			done()
