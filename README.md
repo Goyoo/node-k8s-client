@@ -49,7 +49,7 @@ kubeapi.watch('watch/namespaces/default/pods', function(data){
 
 # Pods
 
-## get pods
+## get pod list
 
 ```js
 kubectl.pod.list(function(err, pods){})
@@ -94,7 +94,7 @@ kubectl.rc.get('nginx', function(err, pod){})
 kubectl.rc.create('/:path/pods/nginx.yaml'), function(err, data){})
 ```
 
-## delete a pod
+## delete a rc
 
 ```js
 kubectl.rc.delete('nginx', function(err, data){})
@@ -113,12 +113,11 @@ kubectl.rc.rollingUpdate('nginx', 'nginx:vserion', function(err, data){})
 kubectl.rc.rollingUpdateByFile('nginx', '/:path/rc/nginx-v2.yaml', function(err, data){})
 ```
 
-## change the amount of replicas 
+## change replicas
 
 ```js
 kubectl.rc.scale('nginx', 3, function(err, data){})
 ```
-
 
 # Service
 

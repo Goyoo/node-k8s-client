@@ -10,5 +10,8 @@
     "test": "mocha"
   },
   "author": "",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "request": "^2.60.0"
+  }
 }
