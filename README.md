@@ -3,8 +3,9 @@
 Node.js client library for Google's Kubernetes Kubectl And API
 
 Install:
+```
     npm install k8s
-	
+```
 # Usage
 
 ## Create client
