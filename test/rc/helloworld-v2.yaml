@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: helloworld-v2
+spec:
+  replicas: 3
+  selector:
+    app: helloworld
+    deployment: v2
+  template:
+    metadata:
+      name: helloworld
+      labels:
+        app: helloworld
+        deployment: v2
+    spec:
+      containers:
+      - name: nodejs
+        image: dhub.yunpro.cn/junjun16818/hello-world:v2
+        ports:
+        - containerPort: 80
