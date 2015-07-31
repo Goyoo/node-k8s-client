@@ -19,7 +19,7 @@
 		    "spec":{
 		      	"containers":[{
 			      	"name": "nginx",
-			        "image": "dhub.yunpro.cn/junjun16818/hello-node",
+			        "image": "nginx",
 			        "ports":[
 				        { "containerPort": 80 }
 					]

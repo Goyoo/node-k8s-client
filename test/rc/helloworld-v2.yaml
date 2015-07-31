@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: nodejs
-        image: dhub.yunpro.cn/junjun16818/hello-world:v2
+        image: junjun16818/hello-world:v2
         ports:
         - containerPort: 80

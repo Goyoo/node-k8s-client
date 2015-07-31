@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: dhub.yunpro.cn/junjun16818/nginx
+    image: nginx
     ports:
     - containerPort: 80

@@ -61,7 +61,7 @@ describe('kubectl rc',function()
 	})
 	
 	it('update rc by image', function(done){
-		kubectl.rc.rollingUpdate('helloworld-v2', 'dhub.yunpro.cn/junjun16818/hello-node', function(err, data){
+		kubectl.rc.rollingUpdate('helloworld-v2', 'junjun16818/hello-node', function(err, data){
 			assert(!err)
 			done(err)
 		})
