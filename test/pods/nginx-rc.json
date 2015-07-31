@@ -1,0 +1,73 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1beta3",
+    "metadata": {
+        "name": "nginx-p8drv",
+        "generateName": "nginx-",
+        "namespace": "default",
+        "selfLink": "/api/v1beta3/namespaces/default/pods/nginx-p8drv",
+        "uid": "ee941ee9-3526-11e5-8cfc-08002776e9e7",
+        "resourceVersion": "13654",
+        "creationTimestamp": "2015-07-28T12:48:23Z",
+        "labels": {
+            "app": "nginx"
+        },
+        "annotations": {
+            "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicationController\",\"namespace\":\"default\",\"name\":\"nginx\",\"uid\":\"ecc86672-3526-11e5-8cfc-08002776e9e7\",\"apiVersion\":\"v1\",\"resourceVersion\":\"13617\"}}"
+        }
+    },
+    "spec": {
+        "containers": [
+            {
+                "name": "nginx",
+                "image": "dhub.yunpro.cn/junjun16818/hello-node",
+                "ports": [
+                    {
+                        "containerPort": 80,
+                        "protocol": "TCP"
+                    }
+                ],
+                "resources": {},
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {},
+                "securityContext": {
+                    "capabilities": {},
+                    "privileged": false
+                }
+            }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccount": "",
+        "host": "127.0.0.1"
+    },
+    "status": {
+        "phase": "Running",
+        "Condition": [
+            {
+                "type": "Ready",
+                "status": "True"
+            }
+        ],
+        "hostIP": "127.0.0.1",
+        "podIP": "172.17.1.14",
+        "startTime": "2015-07-28T12:48:23Z",
+        "containerStatuses": [
+            {
+                "name": "nginx",
+                "state": {
+                    "running": {
+                        "startedAt": "2015-07-28T12:48:29Z"
+                    }
+                },
+                "lastState": {},
+                "ready": true,
+                "restartCount": 0,
+                "image": "dhub.yunpro.cn/junjun16818/hello-node",
+                "imageID": "docker://bf0cef38cb3135ea53911f546546faecd8e8f4bd63857830a1402f4eb9b72a03",
+                "containerID": "docker://bbbf05d34606b2f4c31f4b308794387594ee19a5356fdf643d057912eef1bd3b"
+            }
+        ]
+    }
+}
