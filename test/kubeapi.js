@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/mocha/mocha.d.ts"/>
 var expect = require('chai').expect
-	, K8s = require('k8s')
+	, K8s = require('../index.js')
 	, fs = require('fs')
 	, assert = require('chai').assert
 
@@ -53,22 +53,23 @@ describe('replicationcontrollers',function()
 		})
 	})
 	
-	// it('test api PATCH -> update rc replicas', function(done)
-	// {
-	// 	var json = { 
-	// 		apiVersion: 'v1'
-	// 		, spec: { replicas: 2 }
-	// 	}
+	it('test api PATCH -> update rc replicas', function(done)
+	{
+		var json = { 
+			apiVersion: 'v1'
+			, spec: { replicas: 2 }
+		}
 		
-	// 	kubeapi.patch('namespaces/default/replicationcontrollers/nginx', json, function(err, data)
-	// 	{
-	// 		kubeapi.get('namespaces/default/replicationcontrollers/nginx', function(err, data){
-	// 			console.log(err, data)
-	// 			assert(data.spec.replicas === 2)
-	// 			done()
-	// 		})
-	// 	})
-	// })
+		kubeapi.patch('namespaces/default/replicationcontrollers/nginx', json, function(err, data)
+		{
+			console.log(1111111, err, data)
+			kubeapi.get('namespaces/default/replicationcontrollers/nginx', function(err, data){
+				console.log(err, data)
+				assert(data.spec.replicas === 2)
+				done()
+			})
+		})
+	})
 	
 	it('test api DELETE -> delete rc', function(done){
 		kubeapi.delete('namespaces/default/replicationcontrollers/nginx', function(err, data){

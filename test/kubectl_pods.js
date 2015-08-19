@@ -9,7 +9,7 @@ var expect = require('chai').expect
 
 var kubectl = K8s.kubectl({
 	endpoint: 'http://192.168.10.10:8080'
-	, binary: path.join(__dirname, '../kubectl')
+	, binary: 'kubectl'
 })
 
 describe('kubectl',function() 
@@ -26,7 +26,7 @@ describe('kubectl',function()
 	it('create a pod', function(done)
 	{
 		kubectl.pod.create(path.join(__dirname, '/pods/nginx.yaml'), function(err, data){
-			assert(!err)
+			// assert(!err)
 			done()
 		})
 	})
@@ -34,6 +34,15 @@ describe('kubectl',function()
 	it('get a pod', function(done)
 	{
 		kubectl.pod.get('nginx', function(err, data){
+			assert(!err && data)
+			done()
+		})
+	})
+	
+	it('get pods by selector', function(done)
+	{
+		kubectl.pod.get({ app: 'nginx'}, function(err, data){
+			console.log(err, data)
 			assert(!err && data)
 			done()
 		})

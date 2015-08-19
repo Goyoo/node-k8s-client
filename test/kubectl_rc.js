@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/mocha/mocha.d.ts"/>
 var expect = require('chai').expect
 	, K8s = require('../index.js')
 	, fs = require('fs')
