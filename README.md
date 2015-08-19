@@ -54,6 +54,8 @@ kubeapi.watch('watch/namespaces/default/pods', function(data){
 
 ```js
 kubectl.pod.list(function(err, pods){})
+var label = { name: nginx }
+kubectl.pod.list(label, function(err, pods){})
 ```
 
 ## get a pod
