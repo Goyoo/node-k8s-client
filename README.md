@@ -80,6 +80,11 @@ kubectl.pod.create('/:path/pods/nginx.yaml'), function(err, data){})
 kubectl.pod.delete('nginx', function(err, data){})
 ```
 
+## log
+
+```js
+kubectl.pod.log('pod_id1 pod_id2 pod_id3', function(err, log){})
+```
 
 # ReplicationController
 
