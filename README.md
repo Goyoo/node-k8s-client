@@ -25,6 +25,14 @@ var kubeapi = K8s.api({
 	endpoint: 'http://192.168.10.10:8080'
 	, version: 'v1'
 })
+
+// Configure using kubeconfig
+var kube = k.kubectl({
+	binary: '/bin/kubectl'
+	,kubeconfig: '/etc/cluster1.yaml'
+	,version: 'v1'
+});
+
 ```
 
 # kubeAPI
