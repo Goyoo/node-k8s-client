@@ -35,6 +35,38 @@ var kube = k.kubectl({
 
 ```
 
+### Options
+
+endpoint
+: URL for API
+
+version
+: API Version
+
+binary
+: Path to binary file
+
+kubeconfig
+: Path to kubeconfig
+
+:auth
+Authentication to REST API. Currently supported authentication method type is password
+
+```
+{
+  "auth": {
+    "type" : "password",
+    "username": "admin",
+    "password": "123123"
+  }
+}
+```
+
+:strictSSL
+If set to false, use of the API will not validate SSL certificate. Defualt is true.
+
+
+
 # kubeAPI
 
 ```js
