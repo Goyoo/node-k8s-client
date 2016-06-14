@@ -2,7 +2,6 @@ const request = require('request')
 const Promise = require('promise')
 const Rx = require('rx')
 const _ = require('underscore')
-const jsonpatch = require('fast-json-patch')
 const Observable = Rx.Observable
 
 class Request 

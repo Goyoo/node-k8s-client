@@ -1,6 +1,6 @@
 {
   "name": "k8s",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "author": "junjun16818",
   "description": "Node.js client library for Google's Kubernetes Kubectl And API",
   "repository": {
@@ -14,7 +14,6 @@
   "scripts": {
     "test": "mocha test",
     "typings-install": "tsd install",
-    "postinstall": "npm run typings-install",
     "build": "webpack",
     "watch": "npm run build -- --watch",
     "start": "webpack --watch"
