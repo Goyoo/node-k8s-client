@@ -1,7 +1,8 @@
 {
   "name": "k8s",
   "version": "0.2.2",
-  "description": "junjun16818",
+  "author": "junjun16818",
+  "description": "Node.js client library for Google's Kubernetes Kubectl And API",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/goyoo/node-kubernetes-clinet.git"
@@ -33,6 +34,5 @@
     "typescript": "^1.8.10",
     "webpack": "^1.13.1"
   },
-  "author": "",
   "license": "ISC"
 }
