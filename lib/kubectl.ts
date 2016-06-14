@@ -176,7 +176,7 @@ class Kubectl
     public rollingUpdate(name: string, image: string, done?: (err, data)=>void)
     {
         if( this.type !== 'rc' )
-            throw new Error('not a function')
+            throw new Error('not a function') 
         
         const action = ['rolling-update',  name, '--image=' + image, '--update-period=0s']
 
@@ -210,7 +210,7 @@ class Kubectl
 
         return this.command(action, done)
     }
-    
+
     public portForward(name: string, portString: string, done?: (err, data)=>void)
     {
         if( this.type !== 'pods' )

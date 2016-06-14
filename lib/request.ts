@@ -9,7 +9,7 @@ class Request
 {
     private authtype
     private username
-    private password
+    private password 
     private ignoreCerts
     private domain
 
@@ -63,7 +63,7 @@ class Request
             const authstr = new Buffer(this.username + ':' + this.password).toString('base64')
             options.headers.Authorization = 'Basic ' + authstr
         }
-        
+
         return options
     }
 
