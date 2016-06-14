@@ -6,8 +6,8 @@ var expect = require('chai').expect
 
 
 var kubectl = K8s.kubectl({
-	endpoint: 'http://192.168.10.10:8080'
-	, binary: path.join(__dirname, '../kubectl')
+	endpoint: 'http://172.18.18.101:8080'
+	, binary: 'kubectl'
 })
 
 describe('kubectl rc',function() 
@@ -21,7 +21,7 @@ describe('kubectl rc',function()
 			done()
 		})
 	})
-	
+
 	it('create a rc', function(done)
 	{
 		kubectl.rc.create(path.join(__dirname, '/rc/helloworld-v1.yaml'), function(err, data){
@@ -44,7 +44,7 @@ describe('kubectl rc',function()
 		})
 	})
 	
-	it('update rc by file', function(done){
+	it('rollingUpdate rc by file', function(done){
 		kubectl.rc.rollingUpdateByFile('helloworld-v1', path.join(__dirname, '/rc/helloworld-v2.yaml'), function(err, data){
 			assert(!err)
 			done(err)
@@ -59,8 +59,9 @@ describe('kubectl rc',function()
 		})
 	})
 	
-	it('update rc by image', function(done){
-		kubectl.rc.rollingUpdate('helloworld-v2', 'junjun16818/hello-node', function(err, data){
+	it('rollingUpdate rc by image', function(done)
+	{
+		kubectl.rc.rollingUpdate('helloworld-v2', 'dhub.yunpro.cn/junjun16818/hello-world:v2', function(err, data){
 			assert(!err)
 			done(err)
 		})

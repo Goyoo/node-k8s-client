@@ -1,7 +1,7 @@
 {
   "name": "k8s",
-  "version": "0.2.0",
-  "description": "",
+  "version": "0.2.2",
+  "description": "junjun16818",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/goyoo/node-kubernetes-clinet.git"
@@ -10,15 +10,29 @@
     "url": "http://github.com/goyoo/node-kubernetes-clinet/issues"
   },
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test",
+    "typings-install": "tsd install",
+    "postinstall": "npm run typings-install",
+    "build": "webpack",
+    "watch": "npm run build -- --watch",
+    "start": "webpack --watch"
+  },
+  "dependencies": {
+    "promise": "^7.1.1",
+    "request": "^2.72.0",
+    "rx": "^4.1.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "concurrently": "^2.0.0",
+    "fast-json-patch": "^0.5.7",
+    "json-loader": "^0.5.4",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.1"
   },
   "author": "",
-  "license": "BSD-2-Clause",
-  "dependencies": {
-    "request": "^2.60.0"
-  }
+  "license": "ISC"
 }

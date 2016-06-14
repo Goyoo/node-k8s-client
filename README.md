@@ -69,18 +69,63 @@ If set to false, use of the API will not validate SSL certificate. Defualt is tr
 
 # kubeAPI
 
+#### using callback
 ```js
 // method GET
 kubeapi.get('namespaces/default/replicationcontrollers', function(err, data){})
+
 // method POST
 kubeapi.post('namespaces/default/replicationcontrollers', require('./rc/nginx-rc.json'), function(err, data){})
 // method PUT
 kubeapi.put('namespaces/default/replicationcontrollers/nginx', require('./rc/nginx-rc.json'), function(err, data){})
 // method PATCH
-kubeapi.patch('namespaces/default/replicationcontrollers/nginx', { apiVersion: 'v1' , spec: { replicas: 2 } }, function(err, data){})
+kubeapi.patch('namespaces/default/replicationcontrollers/nginx', [{ op: 'replace', path: '/spec/replicas', value: 2 }], function(err, data){})
 // method DELETE
 kubeapi.delete('namespaces/default/replicationcontrollers/nginx', function(err, data){})
-// method GET -> watch
+
+```
+#### using promise
+```js
+// method GET
+kubeapi.get('namespaces/default/replicationcontrollers').then(function(data){}).catch(function(err){})
+// method POST
+kubeapi.post('namespaces/default/replicationcontrollers', require('./rc/nginx-rc.json')).then(function(data){}).catch(function(err){})
+// method PUT
+kubeapi.put('namespaces/default/replicationcontrollers/nginx', require('./rc/nginx-rc.json')).then(function(data){}).catch(function(err){})
+// method PATCH
+kubeapi.patch('namespaces/default/replicationcontrollers/nginx', [{ op: 'replace', path: '/spec/replicas', value: 2 }]).then(function(data){}).catch(function(err){})
+// method DELETE
+kubeapi.delete('namespaces/default/replicationcontrollers/nginx').then(function(data){}).catch(function(err){})
+
+```
+#### using async/await
+```js
+
+!async function()
+{
+    try
+    {
+        // method GET
+        const data1 = await kubeapi.get('namespaces/default/replicationcontrollers')
+        // method POST
+        const data2 = await kubeapi.post('namespaces/default/replicationcontrollers', require('./rc/nginx-rc.json'))
+        // method PUT
+        const data3 = await kubeapi.put('namespaces/default/replicationcontrollers/nginx', require('./rc/nginx-rc.json'))
+        // method PATCH
+        const data4 = await kubeapi.patch('namespaces/default/replicationcontrollers/nginx', [{ op: 'replace', path: '/spec/replicas', value: 2 }])
+        // method DELETE
+        const data5 = await kubeapi.delete('namespaces/default/replicationcontrollers/nginx')
+    }
+    catch(err){
+        console.log(err)
+    }
+}()
+
+```
+
+#### method GET -> watch
+###### using callback
+```js
 kubeapi.watch('watch/namespaces/default/pods', function(data){
 	// message
 }, function(err){
@@ -89,17 +134,34 @@ kubeapi.watch('watch/namespaces/default/pods', function(data){
 
 ```
 
-# Pods
+###### using rxjs
+```js
+kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
+    // message
+}, err=>{
+    // exit
+})
+```
 
-## get pod list
+# kubectl (callback, promise, async/await)
+
+### Pods
+
+#### get pod list
 
 ```js
+//callback
 kubectl.pod.list(function(err, pods){})
+//promise
+kubectl.pod.list().then........
+//async/await
+const data = await kubectl.pod.list()
+
 var label = { name: nginx }
 kubectl.pod.list(label, function(err, pods){})
 ```
 
-## get  pod
+#### get  pod
 
 ```js
 kubectl.pod.get('nginx', function(err, pod){})
@@ -108,117 +170,117 @@ kubectl.pod.get('nginx', function(err, pod){})
 kubectl.pod.list({ app: 'nginx' }, function(err, pods){}) 
 ```
 
-## create a pod
+#### create a pod
 
 ```js
 kubectl.pod.create('/:path/pods/nginx.yaml'), function(err, data){})
 ```
 
-## delete a pod
+#### delete a pod
 
 ```js
 kubectl.pod.delete('nginx', function(err, data){})
 ```
 
-## log
+#### log
 
 ```js
 kubectl.pod.log('pod_id1 pod_id2 pod_id3', function(err, log){})
 ```
 
-# ReplicationController
+### ReplicationController
 
-## get rc list
+#### get rc list
 
 ```js
 kubectl.rc.list(function(err, pods){})
 ```
 
-## get a rc
+#### get a rc
 
 ```js
 kubectl.rc.get('nginx', function(err, pod){})
 ```
 
-## create a rc
+#### create a rc
 
 ```js
 kubectl.rc.create('/:path/pods/nginx.yaml'), function(err, data){})
 ```
 
-## delete a rc
+#### delete a rc
 
 ```js
 kubectl.rc.delete('nginx', function(err, data){})
 
 ```
 
-## rolling-update by image name
+#### rolling-update by image name
 
 ```js
 kubectl.rc.rollingUpdate('nginx', 'nginx:vserion', function(err, data){})
 ```
 
-## rolling-update by file
+#### rolling-update by file
 
 ```js
 kubectl.rc.rollingUpdateByFile('nginx', '/:path/rc/nginx-v2.yaml', function(err, data){})
 ```
 
-## change replicas
+#### change replicas
 
 ```js
 kubectl.rc.scale('nginx', 3, function(err, data){})
 ```
 
-# Service
+### Service
 
-## get service list
+#### get service list
 
 ```js
 kubectl.service.list(function(err, pods){})
 ```
 
-## get a service
+#### get a service
 
 ```js
 kubectl.service.get('nginx', function(err, pod){})
 ```
 
-## create a service
+#### create a service
 
 ```js
 kubectl.service.create('/:path/service/nginx.yaml'), function(err, data){})
 ```
 
-## delete a service
+#### delete a service
 
 ```js
 kubectl.service.delete('nginx', function(err, data){})
 ```
 
 
-# Node
+### Node
 
-## get node list
+#### get node list
 
 ```js
 kubectl.node.list(function(err, pods){})
 ```
 
-## get a node
+#### get a node
 
 ```js
 kubectl.node.get('nginx', function(err, pod){})
 ```
 
-## create a node
+#### create a node
 
 ```js
 kubectl.node.create('/:path/nodes/node1.yaml'), function(err, data){})
 ```
 
-## delete a node
+#### delete a node
 
 ```js
 kubectl.node.delete('nginx', function(err, data){})
