@@ -145,18 +145,29 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
 
 # kubectl (callback, promise, async/await)
 
+```
+    kubectl['type']['action]([arguments], [flags], [callback]): Promise
+
+    //callback
+    kubect.pod.delete('pod_name', function(err, data){})
+    kubect.pod.delete('pod_name', ['--grace-period=0'], function(err, data){})
+    //promise
+    kubect.pod.delete('pod_name').then()
+    kubect.pod.delete('pod_name', ['--grace-period=0']).then()
+    //async/await
+    const data = kubect.pod.delete('pod_name')
+    const data = kubect.pod.delete('pod_name',['--grace-period=0'])
+```
+
+
 ### Pods
 
 #### get pod list
 
 ```js
-//callback
 kubectl.pod.list(function(err, pods){})
-//promise
-kubectl.pod.list().then........
-//async/await
-const data = await kubectl.pod.list()
 
+//selector
 var label = { name: nginx }
 kubectl.pod.list(label, function(err, pods){})
 ```
