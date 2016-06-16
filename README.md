@@ -160,7 +160,7 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
     const data = kubect.pod.delete('pod_name',['--grace-period=0'])
 ```
 
-#### run command
+#### excute command
 ```
     kubectl.command('get pod pod_name --output=json', function(err, data){})
     kubectl.command('get pod pod_name --output=json').then()
