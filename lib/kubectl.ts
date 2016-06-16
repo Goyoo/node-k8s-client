@@ -32,8 +32,7 @@ class Kubectl
         }
         
         if (this.namespace) {
-            ops.push('--namespace')
-            ops.push(this.namespace)
+            ops.push('--namespace='+this.namespace)
         }
 
         const kube = spawn(this.binary, ops.concat(args))
@@ -87,7 +86,7 @@ class Kubectl
         return promise
     }
 
-    public list(selector, done?)
+    public list(selector, flags?, done?)
     {
         if( !this.type )
             throw new Error('not a function')
@@ -105,95 +104,158 @@ class Kubectl
             done = selector
             selector = '--output=json'
         }
+
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
         
-        const action = ['get', this.type , selector, '--output=json']
+        const action = ['get', this.type , selector, '--output=json'].concat(flags)
 
         return this.command(action, done)
     }
 
-    public get(name: string, done?: (err, data)=>void)
+    public get(name: string, flags?, done?: (err, data)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
          
-        const action = ['get', this.type, name, '--output=json']
+        
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        const action = ['get', this.type, name, '--output=json'].concat(flags)
 
         return this.command(action, done)
         
     }
 
-    public create(filepath: string, done?: (err, data)=>void)
+    public create(filepath: string, flags?, done?: (err, data)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
         
-        const action = ['create', '-f', filepath]
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        const action = ['create', '-f', filepath].concat(flags)
 
         return this.command(action, done)
     }
 
-    public delete(id: string, done?: (err, data)=>void)
+    public delete(id: string, flags, done?: (err, data)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
             
-        const action = ['delete', this.type, id]
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        const action = ['delete', this.type, id].concat(flags)
 
         return this.command(action, done)
     }
 
-    public update(filepath: string, done?: (err, data)=>void)
+    public update(filepath: string, flags?, done?: (err, data)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
         
-        const action = ['update', '-f', filepath]
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        const action = ['update', '-f', filepath].concat(flags)
 
         return this.command(action, done)
     }
 
-    public apply(name: string, json: Object, done?: (err, data)=>void)
+    public apply(name: string, json: Object, flags?, done?: (err, data)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
         
-        const action = ['update',  this.type, name, '--patch='+ JSON.stringify(json)]
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+        const action = ['update',  this.type, name, '--patch='+ JSON.stringify(json)].concat(flags)
 
         return this.command(action, done)
     }
 
-    public rollingUpdateByFile(name: string, filepath: string, done?: (err, data)=>void)
+    public rollingUpdateByFile(name: string, filepath: string, flags?, done?: (err, data)=>void)
     {
         if( this.type !== 'rc' )
             throw new Error('not a function')
+
         
-        const action = ['rolling-update',  name, '-f', filepath, '--update-period=0s']
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+        const action = ['rolling-update',  name, '-f', filepath, '--update-period=0s'].concat(flags)
 
         return this.command(action, done)
     }
 
 
-    public rollingUpdate(name: string, image: string, done?: (err, data)=>void)
+    public rollingUpdate(name: string, image: string, flags?, done?: (err, data)=>void)
     {
         if( this.type !== 'rc' )
             throw new Error('not a function') 
         
-        const action = ['rolling-update',  name, '--image=' + image, '--update-period=0s']
+
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        const action = ['rolling-update',  name, '--image=' + image, '--update-period=0s'].concat(flags)
 
         return this.command(action, done)
     }
 
-    public scale(name: string, replicas: string, done?: (err, data)=>void)
+    public scale(name: string, replicas: string, flags?, done?: (err, data)=>void)
     {
         if( this.type !== 'rc' )
             throw new Error('not a function')
         
-        const action = ['scale', '--replicas=' + replicas, 'replicationcontrollers', name]
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+        const action = ['scale', '--replicas=' + replicas, 'replicationcontrollers', name].concat(flags)
 
         return this.command(action, done)
     }
 
-    public logs(name: string, done?: (err, data)=>void)
+    public logs(name: string, flags?, done?: (err, data)=>void)
     {
         if( this.type !== 'pods' )
             throw new Error('not a function')
@@ -208,7 +270,15 @@ class Kubectl
             action.push(name);
         }
 
-        return this.command(action, done)
+        
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        return this.command(action.concat(flags), done)
     }
 
     public portForward(name: string, portString: string, done?: (err, data)=>void)
