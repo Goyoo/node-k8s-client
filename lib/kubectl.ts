@@ -70,6 +70,9 @@ class Kubectl
 
     public command(cmd, callback): Promise<any>
     {
+        if( _.isString(cmd) )
+            cmd = cmd.split(' ')
+            
         const promise = new Promise((resolve, reject) => 
         {
             this.spawn(cmd, function(err, data)

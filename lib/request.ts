@@ -144,11 +144,16 @@ class Request
         return promise
     }
 
-	public delete(url, done?): Promise<any>
+	public delete(url, json?, done?): Promise<any>
     {
+        if( _.isFunction(json) ){
+            done = json
+            json = undefined
+        }
+
         const promise = new Promise((resolve, reject) => 
         {
-            request.del(this.getRequestOptions(url), function(err, res, data)
+            request.del(this.getRequestOptions(url, json), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
