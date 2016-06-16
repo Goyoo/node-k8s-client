@@ -147,7 +147,7 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
 
 #### example
 ```js
-    kubectl['type']['action]([arguments], [flags], [callback]): Promise
+    //kubectl['type']['action]([arguments], [flags], [callback]): Promise
 
     //callback
     kubect.pod.delete('pod_name', function(err, data){})
