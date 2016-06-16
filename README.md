@@ -146,7 +146,7 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
 # kubectl (callback, promise, async/await)
 
 #### example
-```
+```js
     kubectl['type']['action]([arguments], [flags], [callback]): Promise
 
     //callback
@@ -161,7 +161,7 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
 ```
 
 #### excute command
-```
+```js
     kubectl.command('get pod pod_name --output=json', function(err, data){})
     kubectl.command('get pod pod_name --output=json').then()
     const data = await kubectl.command('get pod pod_name --output=json')
