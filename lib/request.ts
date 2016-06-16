@@ -150,7 +150,7 @@ class Request
             done = json
             json = undefined
         }
-
+        
         const promise = new Promise((resolve, reject) => 
         {
             request.del(this.getRequestOptions(url, json), function(err, res, data)

@@ -145,7 +145,7 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
 
 # kubectl (callback, promise, async/await)
 
-#### exchple
+#### example
 ```
     kubectl['type']['action]([arguments], [flags], [callback]): Promise
 
