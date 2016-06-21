@@ -5,7 +5,7 @@
   "description": "Node.js client library for Google's Kubernetes Kubectl And API",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goyoo/node-kubernetes-clinet.git"
+    "url": "git+https://github.com/hatemismail/node-k8s-client.git"
   },
   "bugs": {
     "url": "http://github.com/goyoo/node-kubernetes-clinet/issues"
@@ -22,16 +22,16 @@
     "promise": "^7.1.1",
     "request": "^2.72.0",
     "rx": "^4.1.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "concurrently": "^2.0.0",
     "fast-json-patch": "^0.5.7",
-    "json-loader": "^0.5.4",
-    "ts-loader": "^0.8.2",
-    "typescript": "^1.8.10",
-    "webpack": "^1.13.1"
+    "json-loader": "^0.5.4"
   },
   "license": "ISC"
 }
