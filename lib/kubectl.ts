@@ -23,9 +23,8 @@ class Kubectl
         const ops = new Array()
 
         if( this.kubeconfig ){
-            ops.push('--kubeconfig')
-            ops.push(this.kubeconfig)
-        } 
+            ops.push('--kubeconfig='+this.kubeconfig)
+        }
         else {
             ops.push('-s')
             ops.push(this.endpoint)
