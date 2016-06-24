@@ -317,5 +317,6 @@ export = (conf)=>
 		, rc: new Kubectl('rc', conf)
 		, service: new Kubectl('service', conf)
 		, node: new Kubectl('node', conf)
+        , endpoint: new Kubectl('endpoint', conf)
 	}
 }
