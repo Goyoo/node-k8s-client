@@ -443,7 +443,8 @@
 	        rc: new Kubectl('rc', conf),
 	        service: new Kubectl('service', conf),
 	        node: new Kubectl('node', conf),
-	        endpoint: new Kubectl('endpoints', conf)
+	        endpoint: new Kubectl('endpoints', conf),
+	        ingress: new Kubectl('ingress', conf)
 	    };
 	};
 
