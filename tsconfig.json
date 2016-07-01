@@ -7,10 +7,10 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "suppressImplicitAnyIndexErrors":true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "declaration": true
   },
   "exclude": [
       "node_modules"
   ]
 }
- 
