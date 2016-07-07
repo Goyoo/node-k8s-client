@@ -1,9 +1,7 @@
-import _api = require('./lib/request')
+import _api = require('./lib/request');
+import _kubectl = require('./lib/kubectl');
 
-module K8s{
-    export var api = require('./lib/request')
-    export var kubectl = require('./lib/kubectl')
-}
-
-module.exports = K8s
- 
+export type k8sRequest = _api.Request;
+export var k8sApi = _api.main;
+export var api = _api.main;
+export var kubectl = _kubectl.main;

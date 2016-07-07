@@ -4,17 +4,18 @@ const Rx = require('rx')
 const _ = require('underscore')
 const Observable = Rx.Observable
 
-class Request 
+export class Request
 {
     private authtype
     private username
-    private password 
+    private password
+    private token
     private ignoreCerts
     private domain
 
     constructor(conf: any)
     {
-        if( conf.hasOwnProperty("auth") && conf.auth.hasOwnProperty("type") ) 
+        if( conf.hasOwnProperty("auth") && conf.auth.hasOwnProperty("type") )
         {
             this.authtype = conf.auth.type
 
@@ -22,8 +23,11 @@ class Request
                 this.username = conf.auth.username
                 this.password = conf.auth.password
             }
+            else if (this.authtype === 'token') {
+                this.token = conf.auth.token
+            }
         }
-        
+
         this.ignoreCerts = false
 
         if (conf.hasOwnProperty("strictSSL") && conf.strictSSL === false)
@@ -49,7 +53,7 @@ class Request
         const options = opts || {}
 
         options.url = this.domain + path
-        
+
         options.headers = {
             "Content-Type": "application/json"
         }
@@ -61,20 +65,21 @@ class Request
         if (this.authtype === 'password') {
             const authstr = new Buffer(this.username + ':' + this.password).toString('base64')
             options.headers.Authorization = 'Basic ' + authstr
+        } else if (this.authtype === 'token') {
+            options.headers.Authorization = 'Bearer ' + this.token
         }
-
         return options
     }
 
     public async get(url: string, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             request.get(this.getRequestOptions(url), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(JSON.parse(data))
             })
         })
@@ -83,16 +88,16 @@ class Request
 
         return promise
     }
-    
+
 	public post(url, body, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             request.post(this.getRequestOptions(url, {json: body}), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -104,13 +109,13 @@ class Request
 
 	public put(url, body, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             request.put(this.getRequestOptions(url, {json: body}), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -122,7 +127,7 @@ class Request
 
 	public patch(url, body, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             const options = this.getRequestOptions(url, { json:  body })
 
@@ -134,7 +139,7 @@ class Request
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -150,14 +155,14 @@ class Request
             done = json
             json = undefined
         }
-        
-        const promise = new Promise((resolve, reject) => 
+
+        const promise = new Promise((resolve, reject) =>
         {
             request.del(this.getRequestOptions(url, json), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -178,15 +183,15 @@ class Request
         {
             request.get(this.domain + url, { timeout: timeout },function(e){ }).on('data', function(data)
             {
-                try{ 
+                try{
                     const json = JSON.parse(data.toString())
                     observer.onNext(json)
                 }
-                catch(err){ 
+                catch(err){
                     observer.onError(err)
                 }
             }).on('error', function(err){
-                observer.onError(err)  
+                observer.onError(err)
             })
         })
 
@@ -206,6 +211,6 @@ class Request
 
 declare function require(name:string)
 
-export = (conf)=>{
+export var main = (conf)=>{
     return new Request(conf)
 }

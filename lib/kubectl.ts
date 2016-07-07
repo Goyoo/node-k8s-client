@@ -1,7 +1,7 @@
 const spawn = require('child_process').spawn
 const _ = require('underscore')
 
-class Kubectl
+export class Kubectl
 {
     private type
     private binary
@@ -25,12 +25,12 @@ class Kubectl
         if( this.kubeconfig ){
             ops.push('--kubeconfig')
             ops.push(this.kubeconfig)
-        } 
+        }
         else {
             ops.push('-s')
             ops.push(this.endpoint)
         }
-        
+
         if (this.namespace) {
             ops.push('--namespace='+this.namespace)
         }
@@ -38,16 +38,16 @@ class Kubectl
         const kube = spawn(this.binary, ops.concat(args))
             , stdout = []
             , stderr = []
-        
+
         kube.stdout.on('data', function (data) {
             stdout.push(data.toString())
         })
-        
+
         kube.stderr.on('data', function (data) {
             stderr.push(data.toString())
         })
-        
-        kube.on('close', function (code) 
+
+        kube.on('close', function (code)
         {
             if( !stderr.length )
                 return done(null, stdout.join(''))
@@ -72,20 +72,20 @@ class Kubectl
     {
         if( _.isString(cmd) )
             cmd = cmd.split(' ')
-            
-        const promise = new Promise((resolve, reject) => 
+
+        const promise = new Promise((resolve, reject) =>
         {
             this.spawn(cmd, function(err, data)
             {
                 if( err )
                     return reject(err || data)
-                
+
                 resolve(cmd.join(' ').indexOf('--output=json') > -1 ? JSON.parse(data): data)
             })
         })
-        
+
         this.callbackFunction(promise, callback)
-        
+
         return promise
     }
 
@@ -93,14 +93,14 @@ class Kubectl
     {
         if( !this.type )
             throw new Error('not a function')
-        
+
         if( typeof selector === 'object')
         {
             var args = '--selector='
-            
+
             for( var key in selector )
                 args += (key + '=' + selector[key])
-            
+
             selector = args + ''
         }
         else{
@@ -114,7 +114,7 @@ class Kubectl
         }
 
         flags = flags || []
-        
+
         const action = ['get', this.type , selector, '--output=json'].concat(flags)
 
         return this.command(action, done)
@@ -124,8 +124,8 @@ class Kubectl
     {
         if( !this.type )
             throw new Error('not a function')
-         
-        
+
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -136,14 +136,14 @@ class Kubectl
         const action = ['get', this.type, name, '--output=json'].concat(flags)
 
         return this.command(action, done)
-        
+
     }
 
     public create(filepath: string, flags?, done?: (err, data)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
-        
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -160,7 +160,7 @@ class Kubectl
     {
         if( !this.type )
             throw new Error('not a function')
-            
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -177,7 +177,7 @@ class Kubectl
     {
         if( !this.type )
             throw new Error('not a function')
-        
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -194,7 +194,7 @@ class Kubectl
     {
         if( !this.type )
             throw new Error('not a function')
-        
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -211,7 +211,7 @@ class Kubectl
         if( this.type !== 'rc' )
             throw new Error('not a function')
 
-        
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -227,8 +227,8 @@ class Kubectl
     public rollingUpdate(name: string, image: string, flags?, done?: (err, data)=>void)
     {
         if( this.type !== 'rc' )
-            throw new Error('not a function') 
-        
+            throw new Error('not a function')
+
 
         if( _.isFunction(flags) ){
             done = flags
@@ -246,7 +246,7 @@ class Kubectl
     {
         if( this.type !== 'rc' )
             throw new Error('not a function')
-        
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -273,7 +273,7 @@ class Kubectl
             action.push(name);
         }
 
-        
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -297,21 +297,21 @@ class Kubectl
     public useContext(context: string, done?: (err, data)=>void)
     {
         var action = new Array('config', 'use-context', context);
-        
+
         return this.command(action, done)
     }
 
     public viewContext(done?: (err, data)=>void)
     {
         var action = new Array('config', '--output=json', 'view');
-        
+
         this.command(action, done)
     }
 }
 
 declare function require(name:string)
 
-export = (conf)=>
+export var main = (conf)=>
 {
 	return {
 		pod: new Kubectl('pods', conf)
