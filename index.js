@@ -47,6 +47,7 @@
 	"use strict";
 	const _api = __webpack_require__(1);
 	const _kubectl = __webpack_require__(6);
+	exports.k8sApi = _api.main;
 	exports.api = _api.main;
 	exports.kubectl = _kubectl.main;
 

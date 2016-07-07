@@ -2,6 +2,7 @@ export declare class Request {
     private authtype;
     private username;
     private password;
+    private token;
     private ignoreCerts;
     private domain;
     constructor(conf: any);
