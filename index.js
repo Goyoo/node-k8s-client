@@ -77,6 +77,9 @@
 	                this.username = conf.auth.username;
 	                this.password = conf.auth.password;
 	            }
+	            else if (this.authtype === 'token') {
+	                this.token = conf.auth.token;
+	            }
 	        }
 	        this.ignoreCerts = false;
 	        if (conf.hasOwnProperty("strictSSL") && conf.strictSSL === false)
@@ -104,6 +107,9 @@
 	        if (this.authtype === 'password') {
 	            const authstr = new Buffer(this.username + ':' + this.password).toString('base64');
 	            options.headers.Authorization = 'Basic ' + authstr;
+	        }
+	        else if (this.authtype === 'token') {
+	            options.headers.Authorization = 'Bearer ' + this.token;
 	        }
 	        return options;
 	    }

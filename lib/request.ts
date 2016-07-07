@@ -4,11 +4,12 @@ const Rx = require('rx')
 const _ = require('underscore')
 const Observable = Rx.Observable
 
-export class Request 
+export class Request
 {
     private authtype
     private username
     private password
+    private token
     private ignoreCerts
     private domain
 
@@ -21,6 +22,9 @@ export class Request
             if (this.authtype === 'password') {
                 this.username = conf.auth.username
                 this.password = conf.auth.password
+            }
+            else if (this.authtype === 'token') {
+                this.token = conf.auth.token
             }
         }
 
@@ -61,8 +65,9 @@ export class Request
         if (this.authtype === 'password') {
             const authstr = new Buffer(this.username + ':' + this.password).toString('base64')
             options.headers.Authorization = 'Basic ' + authstr
+        } else if (this.authtype === 'token') {
+            options.headers.Authorization = 'Bearer ' + this.token
         }
-
         return options
     }
 
