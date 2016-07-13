@@ -176,10 +176,20 @@ class Request
 
         const source = Rx.Observable.create((observer)=>
         {
+            var jsonStr = ''
+
             request.get(this.domain + url, { timeout: timeout },function(e){ }).on('data', function(data)
             {
+                jsonStr += data.toString()
+                
+                if( !/\n/.test(jsonStr) )
+                    return 
+
+                jsonStr = jsonStr.replace('\n', '')
+
                 try{ 
-                    const json = JSON.parse(data.toString())
+                    const json = JSON.parse(jsonStr)
+                    jsonStr = ''
                     observer.onNext(json)
                 }
                 catch(err){ 
