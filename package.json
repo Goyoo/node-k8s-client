@@ -1,14 +1,14 @@
 {
   "name": "k8s",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "author": "junjun16818",
   "description": "Node.js client library for Google's Kubernetes Kubectl And API",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goyoo/node-kubernetes-clinet.git"
+    "url": "git+https://github.com/goyoo/node-k8s-client.git"
   },
   "bugs": {
-    "url": "http://github.com/goyoo/node-kubernetes-clinet/issues"
+    "url": "https://github.com/goyoo/node-k8s-client/issues"
   },
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,9 @@
     "concurrently": "^2.0.0",
     "fast-json-patch": "^0.5.7",
     "json-loader": "^0.5.4",
+    "mocha": "^2.5.3",
     "ts-loader": "^0.8.2",
+    "tsd": "^0.6.5",
     "typescript": "^1.8.10",
     "webpack": "^1.13.1"
   },

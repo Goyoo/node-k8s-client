@@ -23,9 +23,8 @@ class Kubectl
         const ops = new Array()
 
         if( this.kubeconfig ){
-            ops.push('--kubeconfig')
-            ops.push(this.kubeconfig)
-        } 
+            ops.push('--kubeconfig='+this.kubeconfig)
+        }
         else {
             ops.push('-s')
             ops.push(this.endpoint)
@@ -208,7 +207,7 @@ class Kubectl
 
     public rollingUpdateByFile(name: string, filepath: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'rc' )
+        if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function')
 
         
@@ -226,7 +225,7 @@ class Kubectl
 
     public rollingUpdate(name: string, image: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'rc' )
+        if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function') 
         
 
@@ -244,7 +243,7 @@ class Kubectl
 
     public scale(name: string, replicas: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'rc' )
+        if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function')
         
         if( _.isFunction(flags) ){
@@ -274,6 +273,27 @@ class Kubectl
         }
 
         
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        return this.command(action.concat(flags), done)
+    }
+
+    public describe(name: string, flags?, done?: (err, data)=>void)
+    {
+        if( !this.type )
+            throw new Error('not a function')
+
+        var action = new Array('describe', this.type);
+
+        if ( name === null ) {
+            action.push(name);
+        }
+
         if( _.isFunction(flags) ){
             done = flags
             flags = null
@@ -314,9 +334,24 @@ declare function require(name:string)
 export = (conf)=>
 {
 	return {
+    // short names are just aliases to longer names
 		pod: new Kubectl('pods', conf)
-		, rc: new Kubectl('rc', conf)
-		, service: new Kubectl('service', conf)
-		, node: new Kubectl('node', conf)
+		, po: new Kubectl('pods', conf)
+		, replicationcontroller: new Kubectl('replicationcontrollers', conf)
+		, rc: new Kubectl('replicationcontrollers', conf)
+		, service: new Kubectl('services', conf)
+		, svc: new Kubectl('services', conf)
+		, node: new Kubectl('nodes', conf)
+		, no: new Kubectl('nodes', conf)
+		, namespace: new Kubectl('namespaces', conf)
+		, ns: new Kubectl('namespaces', conf)
+		, deployment: new Kubectl('deployments', conf)
+		, daemonset: new Kubectl('daemonsets', conf)
+		, ds: new Kubectl('daemonsets', conf)
+		, secrets: new Kubectl('secrets', conf)
+		, endpoint: new Kubectl('endpoints', conf)
+		, ep: new Kubectl('endpoints', conf)
+		, ingress: new Kubectl('ingress', conf)
+		, ing: new Kubectl('ingress', conf)
 	}
 }

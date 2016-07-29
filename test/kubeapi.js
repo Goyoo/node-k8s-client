@@ -9,7 +9,7 @@ const expect = require('chai').expect
 
 var kubeapi = K8s.api({
 	endpoint: 'http://172.18.18.101:8080'
-	, version: 'v1'
+	, version: '/api/v1'
 })
 
 describe('kubeapi ',function() 

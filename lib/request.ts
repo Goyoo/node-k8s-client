@@ -29,7 +29,7 @@ class Request
         if (conf.hasOwnProperty("strictSSL") && conf.strictSSL === false)
             this.ignoreCerts = true;
 
-        this.domain = conf.endpoint + '/api/' + conf.version + '/'
+        this.domain = conf.endpoint + conf.version + '/'
     }
 
     private callbackFunction(primise, callback)
