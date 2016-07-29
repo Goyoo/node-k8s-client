@@ -6,7 +6,7 @@ var expect = require('chai').expect
 
 
 var kubectl = K8s.kubectl({
-	endpoint: 'http://172.18.18.101:8080'
+	endpoint: 'https://192.168.99.100:8443'
 	, binary: 'kubectl'
 })
 
@@ -17,8 +17,7 @@ describe('kubectl rc',function()
 	it('get rc list', function(done)
 	{
 		kubectl.rc.list(function(err, data){
-			assert(!err && data)
-			done()
+			done(err)
 		})
 	})
 
@@ -61,7 +60,7 @@ describe('kubectl rc',function()
 	
 	it('rollingUpdate rc by image', function(done)
 	{
-		kubectl.rc.rollingUpdate('helloworld-v2', 'dhub.yunpro.cn/junjun16818/hello-world:v2', function(err, data){
+		kubectl.rc.rollingUpdate('helloworld-v2', 'junjun16818/hello-world:v1', function(err, data){
 			assert(!err)
 			done(err)
 		})
@@ -69,7 +68,7 @@ describe('kubectl rc',function()
 	
 	it('delete a rc', function(done)
 	{
-		kubectl.rc.delete('helloworld-v2', function(err, data){
+		kubectl.rc.delete('helloworld-v2',['--grace-period=0'], function(err, data){
 			assert(!err)
 			done(err)
 		})

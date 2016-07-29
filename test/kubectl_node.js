@@ -6,7 +6,7 @@ var expect = require('chai').expect
 
 
 var kubectl = K8s.kubectl({
-	endpoint: 'http://172.18.18.101:8080'
+	endpoint: 'https://192.168.99.100:8443'
 	, binary: 'kubectl'
 })
 

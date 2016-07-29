@@ -8,8 +8,13 @@ const expect = require('chai').expect
 
 
 var kubeapi = K8s.api({
-	endpoint: 'http://172.18.18.101:8080'
-	, version: '/api/v1'
+	endpoint: 'https://192.168.99.100:8443',
+	version: '/api/v1',
+	auth: {
+		clientCert: fs.readFileSync(`${process.env.HOME}/.minikube/apiserver.crt`).toString(),
+		clientKey: fs.readFileSync(`${process.env.HOME}/.minikube/apiserver.key`).toString() ,
+		caCert: fs.readFileSync(`${process.env.HOME}/.minikube/ca.crt`).toString()
+	}
 })
 
 describe('kubeapi ',function() 
@@ -19,40 +24,25 @@ describe('kubeapi ',function()
 	it('test api GET -> get rc list', function(done)
 	{
 		kubeapi.get('namespaces/default/replicationcontrollers', function(err, data){
-			// assert(data)
+			assert(data.items.length===0)
 			done(err)
 		})
 	})
 	
-	it('test api GET by watch -> get rc list', function(done)
-	{
-		kubeapi.watch('watch/namespaces/default/pods', function(data){
-			done(err)
-		})
+	// it('test api GET by watch -> get rc list', function(done)
+	// {
+	// 	kubeapi.watch('watch/namespaces/default/pods', function(data){
+	// 		done(err)
+	// 	})
 		
-		done()
-	})
-	
+	// 	done()
+	// })
+
 	it('test api POST -> create rc', function(done){
 		var rc = require('./rc/nginx-rc.json')
 		kubeapi.post('namespaces/default/replicationcontrollers', rc, function(err, data){
+			assert(data.spec.replicas === 3)
 			return done()
-		})
-	})
-	
-	it('test api PUT -> change rc replicas', function(done)
-	{
-		kubeapi.get('namespaces/default/replicationcontrollers/nginx', function(err, data)
-		{
-			data.spec.replicas = 1
-            
-			kubeapi.put('namespaces/default/replicationcontrollers/nginx', data, function(err, data)
-			{
-				kubeapi.get('namespaces/default/replicationcontrollers/nginx', function(err, data){
-					// assert(data.spec.replicas === 1)
-					done()
-				})
-			})
 		})
 	})
 	
@@ -64,19 +54,31 @@ describe('kubeapi ',function()
 		kubeapi.patch('namespaces/default/replicationcontrollers/nginx', json, function(err, data)
 		{
 			kubeapi.get('namespaces/default/replicationcontrollers/nginx', function(err, data){
-				// assert(data.spec.replicas === 2)
+				assert(data.spec.replicas === 2)
 				done()
 			})
 		})
 	})
 	
-	it('test api DELETE -> delete rc', function(done){
-		kubeapi.delete('namespaces/default/replicationcontrollers/nginx', function(err, data){
+	it('test api PATCH -> update rc replicas', function(done)
+	{
+
+		var json = [{ op: 'replace', path: '/spec/replicas', value: 0 }]
+
+		kubeapi.patch('namespaces/default/replicationcontrollers/nginx', json, function(err, data)
+		{
+			kubeapi.get('namespaces/default/replicationcontrollers/nginx', function(err, data){
+				assert(data.spec.replicas === 0)
+				done()
+			})
+		})
+	})
+
+	it('test api DELETE -> delete rc', function(done)
+	{
+		kubeapi.delete('namespaces/default/replicationcontrollers/nginx', {gracePeriodSeconds: 1}, function(err, data){
 			done()
 		})
 	})
 	
 })
-
-
-// curl --request PATCH --data '[ { "op": "add", "path": "/metadata/labels/hello", "value": "world" } ]' -H "Content-Type:application/json-patch+json" http://172.18.18.101:8080/api/v1/namespaces/default/replicationcontrollers/nginx
