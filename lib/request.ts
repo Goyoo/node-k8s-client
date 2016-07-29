@@ -6,30 +6,16 @@ const Observable = Rx.Observable
 
 class Request 
 {
-    private authtype
-    private username
-    private password 
-    private ignoreCerts
+    private strictSSL;
     private domain
+    private auth;
 
     constructor(conf: any)
     {
-        if( conf.hasOwnProperty("auth") && conf.auth.hasOwnProperty("type") ) 
-        {
-            this.authtype = conf.auth.type
-
-            if (this.authtype === 'password') {
-                this.username = conf.auth.username
-                this.password = conf.auth.password
-            }
-        }
-        
-        this.ignoreCerts = false
-
-        if (conf.hasOwnProperty("strictSSL") && conf.strictSSL === false)
-            this.ignoreCerts = true;
-
-        this.domain = conf.endpoint + conf.version + '/'
+        this.auth = conf.auth;
+        // only set to false if explictly false in the config
+        this.strictSSL = (conf.strictSSL !== false);
+        this.domain = `${conf.endpoint}${conf.version}/`;
     }
 
     private callbackFunction(primise, callback)
@@ -54,13 +40,19 @@ class Request
             "Content-Type": "application/json"
         }
 
-        if( this.ignoreCerts ){
-            options.strictSSL = false;
-        }
+        options.strictSSL = this.strictSSL;
 
-        if (this.authtype === 'password') {
-            const authstr = new Buffer(this.username + ':' + this.password).toString('base64')
-            options.headers.Authorization = 'Basic ' + authstr
+        if (this.auth) {
+            if (this.auth.username && this.auth.password) {
+                const authstr = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
+                options.headers.Authorization = `Basic ${authstr}`;
+            } else if (this.auth.token) {
+                options.headers.Authorization = `Bearer ${this.auth.token}`;
+            } else if (this.auth.clientCert && this.auth.clientKey && this.auth.caCert) {
+                options.cert = this.auth.clientCert;
+                options.key = this.auth.clientKey;
+                options.ca = this.auth.caCert;
+            }
         }
 
         return options
