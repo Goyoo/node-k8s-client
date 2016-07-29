@@ -12,8 +12,9 @@ Node.js client library for Google's Kubernetes Kubectl And API
     npm run build
 ```
 #test
+ for test please install [minikube](https://github.com/kubernetes/minikube/releases)
 ```
-    # for test please install [minikube](https://github.com/kubernetes/minikube/releases)
+    
     mocha test
 ```
 
