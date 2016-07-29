@@ -51,22 +51,47 @@ kubeconfig
 : Path to kubeconfig
 
 :auth
-Authentication to REST API. Currently supported authentication method type is password
+See below authentication section
+
+:strictSSL
+If set to false, use of the API will not validate SSL certificate. Defualt is true.
+
+#### Authentication
+
+Authentication to REST API is done via the `auth` option. Currently supported authentication method types are username/password, token and client certificate. Presence of authentication details is checked in this order so if a token is specified as well as a client certificate then a token will be used.
+
+Username/password:
 
 ```
 {
   "auth": {
-    "type" : "password",
     "username": "admin",
     "password": "123123"
   }
 }
 ```
 
-:strictSSL
-If set to false, use of the API will not validate SSL certificate. Defualt is true.
+Token:
 
+```
+{
+  "auth": {
+    "token": "hcc927ndkcka12"
+  }
+}
+```
 
+Client certificate:
+
+```
+{
+  "auth": {
+    "clientKey": fs.readFileSync('k8s-client-key.pem'),
+    "clientCert": fs.readFileSync('k8s-client-cert.pem'),
+    "caCert": fs.readFileSync('k8s-ca-crt.pem')
+  }
+}
+```
 
 # kubeAPI
 
