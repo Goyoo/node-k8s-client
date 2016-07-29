@@ -29,7 +29,9 @@
     "concurrently": "^2.0.0",
     "fast-json-patch": "^0.5.7",
     "json-loader": "^0.5.4",
+    "mocha": "^2.5.3",
     "ts-loader": "^0.8.2",
+    "tsd": "^0.6.5",
     "typescript": "^1.8.10",
     "webpack": "^1.13.1"
   },
