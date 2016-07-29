@@ -284,6 +284,27 @@ class Kubectl
         return this.command(action.concat(flags), done)
     }
 
+    public describe(name: string, flags?, done?: (err, data)=>void)
+    {
+        if( !this.type )
+            throw new Error('not a function')
+
+        var action = new Array('describe', this.type);
+
+        if ( name === null ) {
+            action.push(name);
+        }
+
+        if( _.isFunction(flags) ){
+            done = flags
+            flags = null
+        }
+
+        flags = flags || []
+
+        return this.command(action.concat(flags), done)
+    }
+
     public portForward(name: string, portString: string, done?: (err, data)=>void)
     {
         if( this.type !== 'pods' )
