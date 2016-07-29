@@ -318,5 +318,6 @@ export = (conf)=>
 		, rc: new Kubectl('rc', conf)
 		, service: new Kubectl('service', conf)
 		, node: new Kubectl('node', conf)
+		, namespace: new Kubectl('namespace', conf)
 	}
 }
