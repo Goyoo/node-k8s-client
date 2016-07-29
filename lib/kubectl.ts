@@ -319,5 +319,8 @@ export = (conf)=>
 		, service: new Kubectl('service', conf)
 		, node: new Kubectl('node', conf)
 		, namespace: new Kubectl('namespace', conf)
+		, deployment: new Kubectl('deployment', conf)
+		, ds: new Kubectl('ds', conf)
+		, secrets: new Kubectl('secrets', conf)
 	}
 }
