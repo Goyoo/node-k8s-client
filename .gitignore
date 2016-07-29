@@ -1,5 +1,8 @@
 node_modules
 typings
 npm-debug.log
-index.js
 .idea
+
+# Generated JS files
+index.js
+lib/*.js*
