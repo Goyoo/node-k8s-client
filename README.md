@@ -3,7 +3,21 @@
 
 Node.js client library for Google's Kubernetes Kubectl And API
 
-Install:
+
+# build
+```
+    git clone https://github.com/Goyoo/node-k8s-client.git
+    npm install
+    tsd install 
+    npm run build
+```
+#test
+```
+    # for test please install [minikube](https://github.com/kubernetes/minikube/releases)
+    mocha test
+```
+
+# Install:
 ```
     npm install k8s
 ```
@@ -28,7 +42,7 @@ var kubeapi = K8s.api({
 })
 
 // Configure using kubeconfig
-var kube = k.kubectl({
+var kube = K8s.kubectl({
 	binary: '/bin/kubectl'
 	,kubeconfig: '/etc/cluster1.yaml'
 	,version: '/api/v1'
@@ -171,7 +185,7 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
 
 # kubectl (callback, promise, async/await)
 
-#### example
+### example
 ```js
     //kubectl['type']['action]([arguments], [flags], [callback]): Promise
 
@@ -186,16 +200,16 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
     const data = kubect.pod.delete('pod_name',['--grace-period=0'])
 ```
 
-#### excute command
+### excute command
 ```js
     kubectl.command('get pod pod_name --output=json', function(err, data){})
     kubectl.command('get pod pod_name --output=json').then()
     const data = await kubectl.command('get pod pod_name --output=json')
 ```
 
-### Pods
+## Pods
 
-#### get pod list
+### get pod list
 
 ```js
 kubectl.pod.list(function(err, pods){})
@@ -205,7 +219,7 @@ var label = { name: nginx }
 kubectl.pod.list(label, function(err, pods){})
 ```
 
-#### get  pod
+### get  pod
 
 ```js
 kubectl.pod.get('nginx', function(err, pod){})
@@ -214,118 +228,157 @@ kubectl.pod.get('nginx', function(err, pod){})
 kubectl.pod.list({ app: 'nginx' }, function(err, pods){}) 
 ```
 
-#### create a pod
+### create a pod
 
 ```js
 kubectl.pod.create('/:path/pods/nginx.yaml'), function(err, data){})
 ```
 
-#### delete a pod
+### delete a pod
 
 ```js
 kubectl.pod.delete('nginx', function(err, data){})
 ```
 
-#### log
+### log
 
 ```js
 kubectl.pod.log('pod_id1 pod_id2 pod_id3', function(err, log){})
 ```
 
-### ReplicationController
+## ReplicationController
 
-#### get rc list
+### get rc list
 
 ```js
 kubectl.rc.list(function(err, pods){})
 ```
 
-#### get a rc
+### get a rc
 
 ```js
 kubectl.rc.get('nginx', function(err, pod){})
 ```
 
-#### create a rc
+### create a rc
 
 ```js
 kubectl.rc.create('/:path/pods/nginx.yaml'), function(err, data){})
 ```
 
-#### delete a rc
+### delete a rc
 
 ```js
 kubectl.rc.delete('nginx', function(err, data){})
 
 ```
 
-#### rolling-update by image name
+### rolling-update by image name
 
 ```js
 kubectl.rc.rollingUpdate('nginx', 'nginx:vserion', function(err, data){})
 ```
 
-#### rolling-update by file
+### rolling-update by file
 
 ```js
 kubectl.rc.rollingUpdateByFile('nginx', '/:path/rc/nginx-v2.yaml', function(err, data){})
 ```
 
-#### change replicas
+### change replicas
 
 ```js
 kubectl.rc.scale('nginx', 3, function(err, data){})
 ```
 
-### Service
+## Service
 
-#### get service list
+### get service list
 
 ```js
 kubectl.service.list(function(err, pods){})
 ```
 
-#### get a service
+### get a service
 
 ```js
 kubectl.service.get('nginx', function(err, pod){})
 ```
 
-#### create a service
+### create a service
 
 ```js
 kubectl.service.create('/:path/service/nginx.yaml'), function(err, data){})
 ```
 
-#### delete a service
+### delete a service
 
 ```js
 kubectl.service.delete('nginx', function(err, data){})
 ```
 
 
-### Node
+## Node
 
-#### get node list
+### get node list
 
 ```js
 kubectl.node.list(function(err, pods){})
 ```
 
-#### get a node
+### get a node
 
 ```js
 kubectl.node.get('nginx', function(err, pod){})
 ```
 
-#### create a node
+### create a node
 
 ```js
 kubectl.node.create('/:path/nodes/node1.yaml'), function(err, data){})
 ```
 
-#### delete a node
+### delete a node
 
 ```js
 kubectl.node.delete('nginx', function(err, data){})
+
+
+```
+
+## Namespace
+
+```js
+    kubectl.namespace['fn']
+
+```
+## Daemonset
+
+```js
+    kubectl.daemonset['fn']
+
+```
+## Deployment
+
+```js
+    kubectl.deployment['fn']
+
+```
+## Secrets
+
+```js
+    kubectl.secrets['fn']
+
+```
+## endpoint
+
+```js
+    kubectl.endpoint['fn']
+
+```
+## ingress
+
+```js
+    kubectl.ingress['fn']
+
 ```
