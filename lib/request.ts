@@ -176,19 +176,18 @@ class Request
             {
                 jsonStr += data.toString()
 
-                jsonStr += data.toString();
-	                if (!/\n$/.test(jsonStr))
-	                    return;
-	                jsonStr = jsonStr.replace('\n$', '');
-	                try {
-						jsonStr.split('\n').forEach(function(jsonStr){
-							if( !jsonStr )
-								return 
-							const json = JSON.parse(jsonStr);
-							observer.onNext(json);
-						})
-						jsonStr = '';
-	                }
+                if (!/\n$/.test(jsonStr))
+                    return;
+                jsonStr = jsonStr.replace('\n$', '');
+                try {
+                    jsonStr.split('\n').forEach(function(jsonStr){
+                        if( !jsonStr )
+                            return 
+                        const json = JSON.parse(jsonStr);
+                        observer.onNext(json);
+                    })
+                    jsonStr = '';
+                }
                 catch(err){ 
                     observer.onError(err)
                 }
