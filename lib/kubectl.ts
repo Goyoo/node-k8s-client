@@ -207,7 +207,7 @@ class Kubectl
 
     public rollingUpdateByFile(name: string, filepath: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'rc' )
+        if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function')
 
         
@@ -225,7 +225,7 @@ class Kubectl
 
     public rollingUpdate(name: string, image: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'rc' )
+        if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function') 
         
 
@@ -243,7 +243,7 @@ class Kubectl
 
     public scale(name: string, replicas: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'rc' )
+        if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function')
         
         if( _.isFunction(flags) ){
@@ -334,15 +334,24 @@ declare function require(name:string)
 export = (conf)=>
 {
 	return {
+    // short names are just aliases to longer names
 		pod: new Kubectl('pods', conf)
-		, rc: new Kubectl('rc', conf)
-		, service: new Kubectl('service', conf)
-		, node: new Kubectl('node', conf)
-		, namespace: new Kubectl('namespace', conf)
-		, deployment: new Kubectl('deployment', conf)
-		, ds: new Kubectl('ds', conf)
+		, po: new Kubectl('pods', conf)
+		, replicationcontroller: new Kubectl('replicationcontrollers', conf)
+		, rc: new Kubectl('replicationcontrollers', conf)
+		, service: new Kubectl('services', conf)
+		, svc: new Kubectl('services', conf)
+		, node: new Kubectl('nodes', conf)
+		, no: new Kubectl('nodes', conf)
+		, namespace: new Kubectl('namespaces', conf)
+		, ns: new Kubectl('namespaces', conf)
+		, deployment: new Kubectl('deployments', conf)
+		, daemonset: new Kubectl('daemonsets', conf)
+		, ds: new Kubectl('daemonsets', conf)
 		, secrets: new Kubectl('secrets', conf)
 		, endpoint: new Kubectl('endpoints', conf)
+		, ep: new Kubectl('endpoints', conf)
 		, ingress: new Kubectl('ingress', conf)
+		, ing: new Kubectl('ingress', conf)
 	}
 }
