@@ -4,6 +4,8 @@ const Rx = require('rx')
 const _ = require('underscore')
 const Observable = Rx.Observable
 
+declare var Buffer
+
 class Request 
 {
     private strictSSL;
