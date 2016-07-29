@@ -23,9 +23,8 @@ class Kubectl
         const ops = new Array()
 
         if( this.kubeconfig ){
-            ops.push('--kubeconfig')
-            ops.push(this.kubeconfig)
-        } 
+            ops.push('--kubeconfig='+this.kubeconfig)
+        }
         else {
             ops.push('-s')
             ops.push(this.endpoint)
@@ -343,5 +342,7 @@ export = (conf)=>
 		, deployment: new Kubectl('deployment', conf)
 		, ds: new Kubectl('ds', conf)
 		, secrets: new Kubectl('secrets', conf)
+		, endpoint: new Kubectl('endpoints', conf)
+		, ingress: new Kubectl('ingress', conf)
 	}
 }
