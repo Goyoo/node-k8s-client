@@ -167,7 +167,7 @@ kubeapi.delete('namespaces/default/replicationcontrollers/nginx').then(function(
 #### method GET -> watch
 ###### using callback
 ```js
-kubeapi.watch('watch/namespaces/default/pods', function(data){
+var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
 	// message
 }, function(err){
 	// exit
