@@ -31,13 +31,19 @@ describe('kubeapi ',function()
 	
 	// it('test api GET by watch -> get rc list', function(done)
 	// {
-	// 	kubeapi.watch('watch/namespaces/default/pods', function(data){
-	// 		done(err)
+	// 	var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
+	// 		// console.log(111,data, res)
+	// 		// done(err)
+	// 	}, function(err){
+	// 		console.log(err)
 	// 	})
 		
-	// 	done()
+	// 	setTimeout(function() {
+	// 		res.emit('close')
+	// 	}, 2000)
+	// 	// done()
 	// })
-
+	
 	it('test api POST -> create rc', function(done){
 		var rc = require('./rc/nginx-rc.json')
 		kubeapi.post('namespaces/default/replicationcontrollers', rc, function(err, data){

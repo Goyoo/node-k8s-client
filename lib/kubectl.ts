@@ -353,5 +353,9 @@ export = (conf)=>
 		, ep: new Kubectl('endpoints', conf)
 		, ingress: new Kubectl('ingress', conf)
 		, ing: new Kubectl('ingress', conf)
+        , command: function(){
+            arguments[0] = arguments[0].split(' ')
+            return this.pod.command.apply(this.pod, arguments)
+        }
 	}
 }

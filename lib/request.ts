@@ -167,12 +167,13 @@ class Request
             timeout = message
             message = undefined
         }
+        var res
 
         const source = Rx.Observable.create((observer)=>
         {
             var jsonStr = ''
 
-            request.get(this.domain + url, { timeout: timeout },function(e){ }).on('data', function(data)
+            res = request.get(this.getRequestOptions(url), { timeout: timeout },function(e){ }).on('data', function(data)
             {
                 jsonStr += data.toString()
 
@@ -193,6 +194,8 @@ class Request
                 }
             }).on('error', function(err){
                 observer.onError(err)  
+            }).on('close', function(){
+                observer.onError() 
             })
         })
 
@@ -204,6 +207,8 @@ class Request
                 if( _.isFunction(exit) )
                     exit(err)
             })
+            
+            return res
         }
 
         return source

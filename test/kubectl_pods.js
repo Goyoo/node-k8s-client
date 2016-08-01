@@ -16,6 +16,9 @@ describe('kubectl pod',function()
 	
 	it('get pods list', function(done)
 	{
+		// kubectl.command('get pods --output=json').then(function(a){
+		// 	console.log(a)
+		// })
 		kubectl.pod.list(function(err, data){
 			done(err)
 		})
