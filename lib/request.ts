@@ -172,8 +172,7 @@ class Request
         const source = Rx.Observable.create((observer)=>
         {
             var jsonStr = ''
-
-            res = request.get(this.getRequestOptions(url), { timeout: timeout },function(e){ }).on('data', function(data)
+            res = request.get(this.getRequestOptions(url, { timeout: timeout }),function(e){ }).on('data', function(data)
             {
                 jsonStr += data.toString()
 
