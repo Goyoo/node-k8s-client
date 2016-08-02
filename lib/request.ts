@@ -174,22 +174,26 @@ class Request
             var jsonStr = ''
             res = request.get(this.getRequestOptions(url, { timeout: timeout }),function(e){ }).on('data', function(data)
             {
-                jsonStr += data.toString()
+                if (res.response.headers['content-type']==='text/plain') {
+                    observer.onNext(data.toString())
+                } else {
+                    jsonStr += data.toString()
 
-                if (!/\n$/.test(jsonStr))
-                    return;
-                jsonStr = jsonStr.replace('\n$', '');
-                try {
-                    jsonStr.split('\n').forEach(function(jsonStr){
-                        if( !jsonStr )
-                            return 
-                        const json = JSON.parse(jsonStr);
-                        observer.onNext(json);
-                    })
-                    jsonStr = '';
-                }
-                catch(err){ 
-                    observer.onError(err)
+                    if (!/\n$/.test(jsonStr))
+                        return;
+                    jsonStr = jsonStr.replace('\n$', '');
+                    try {
+                        jsonStr.split('\n').forEach(function(jsonStr){
+                            if( !jsonStr )
+                                return 
+                            const json = JSON.parse(jsonStr);
+                            observer.onNext(json);
+                        })
+                        jsonStr = '';
+                    }
+                    catch(err){ 
+                        observer.onError(err)
+                    }
                 }
             }).on('error', function(err){
                 observer.onError(err)  
