@@ -11,11 +11,11 @@ fs.readdirSync('node_modules').filter(function(x) {
 })
 
 module.exports = {
-    entry: "./index.ts",
+    entry: './index.ts',
     output: {
         path: __dirname,
-        filename: "index.js",
-        libraryTarget: "this"
+        filename: 'index.js',
+        libraryTarget: 'this'
     },
     target: 'node',
     module: {
