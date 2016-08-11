@@ -5,7 +5,7 @@ const Observable = Rx.Observable
 
 declare var Buffer
 
-class Request
+export class Request
 {
     private strictSSL
     private domain
