@@ -5,18 +5,18 @@ const Observable = Rx.Observable
 
 declare var Buffer
 
-export class Request
+class Request
 {
-    private strictSSL;
+    private strictSSL
     private domain
-    private auth;
+    private auth
 
     constructor(conf: any)
     {
-        this.auth = conf.auth;
+        this.auth = conf.auth
         // only set to false if explictly false in the config
-        this.strictSSL = (conf.strictSSL !== false);
-        this.domain = `${conf.endpoint}${conf.version}/`;
+        this.strictSSL = (conf.strictSSL !== false)
+        this.domain = `${conf.endpoint}${conf.version}/`
     }
 
     private callbackFunction(primise, callback)
@@ -41,18 +41,18 @@ export class Request
             "Content-Type": "application/json"
         }
 
-        options.strictSSL = this.strictSSL;
+        options.strictSSL = this.strictSSL
 
         if (this.auth) {
             if (this.auth.username && this.auth.password) {
                 const authstr = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
-                options.headers.Authorization = `Basic ${authstr}`;
+                options.headers.Authorization = `Basic ${authstr}`
             } else if (this.auth.token) {
-                options.headers.Authorization = `Bearer ${this.auth.token}`;
+                options.headers.Authorization = `Bearer ${this.auth.token}`
             } else if (this.auth.clientCert && this.auth.clientKey && this.auth.caCert) {
-                options.cert = this.auth.clientCert;
-                options.key = this.auth.clientKey;
-                options.ca = this.auth.caCert;
+                options.cert = this.auth.clientCert
+                options.key = this.auth.clientKey
+                options.ca = this.auth.caCert
             }
         }
 
@@ -179,16 +179,16 @@ export class Request
                     jsonStr += data.toString()
 
                     if (!/\n$/.test(jsonStr))
-                        return;
-                    jsonStr = jsonStr.replace('\n$', '');
+                        return
+                    jsonStr = jsonStr.replace('\n$', '')
                     try {
                         jsonStr.split('\n').forEach(function(jsonStr){
                             if( !jsonStr )
                                 return
-                            const json = JSON.parse(jsonStr);
-                            observer.onNext(json);
+                            const json = JSON.parse(jsonStr)
+                            observer.onNext(json)
                         })
-                        jsonStr = '';
+                        jsonStr = ''
                     }
                     catch(err){
                         observer.onError(err)

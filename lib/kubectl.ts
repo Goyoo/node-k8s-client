@@ -262,14 +262,14 @@ class Kubectl
         if( this.type !== 'pods' )
             throw new Error('not a function')
 
-        var action = new Array('logs');
+        var action = new Array('logs')
 
         if (name.indexOf(' ') > -1) {
-            var names = name.split(/ /);
-            action.push(names[0]);
-            action.push(names[1]);
+            var names = name.split(/ /)
+            action.push(names[0])
+            action.push(names[1])
         } else {
-            action.push(name);
+            action.push(name)
         }
 
         
@@ -288,10 +288,10 @@ class Kubectl
         if( !this.type )
             throw new Error('not a function')
 
-        var action = new Array('describe', this.type);
+        var action = new Array('describe', this.type)
 
         if ( name === null ) {
-            action.push(name);
+            action.push(name)
         }
 
         if( _.isFunction(flags) ){
@@ -309,21 +309,21 @@ class Kubectl
         if( this.type !== 'pods' )
             throw new Error('not a function')
 
-        var action = new Array('port-forward', name, portString);
+        var action = new Array('port-forward', name, portString)
 
         return this.command(action, done)
     }
 
     public useContext(context: string, done?: (err, data)=>void)
     {
-        var action = new Array('config', 'use-context', context);
+        var action = new Array('config', 'use-context', context)
         
         return this.command(action, done)
     }
 
     public viewContext(done?: (err, data)=>void)
     {
-        var action = new Array('config', '--output=json', 'view');
+        var action = new Array('config', '--output=json', 'view')
         
         this.command(action, done)
     }

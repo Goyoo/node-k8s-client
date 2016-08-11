@@ -8,4 +8,4 @@ namespace K8s {
     export var kubectl = require('./lib/kubectl');
 }
 
-export default K8s;
+export = K8s;

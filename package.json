@@ -1,6 +1,6 @@
 {
   "name": "k8s",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "author": "junjun16818",
   "description": "Node.js client library for Google's Kubernetes Kubectl And API",
   "repository": {
@@ -18,12 +18,12 @@
     "start": "webpack --watch"
   },
   "dependencies": {
-    "@types/node": "^6.0.32",
     "request": "^2.72.0",
     "rx": "^4.1.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "@types/node": "^6.0.32",
     "chai": "^3.5.0",
     "concurrently": "^2.0.0",
     "fast-json-patch": "^0.5.7",

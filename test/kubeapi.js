@@ -5,7 +5,7 @@ const expect = require('chai').expect
 	, jsonpatch = require('fast-json-patch')
 
 
-
+// return console.log(K8s.api)
 
 var kubeapi = K8s.api({
 	endpoint: 'https://192.168.99.100:8443',
@@ -15,6 +15,12 @@ var kubeapi = K8s.api({
 		clientKey: fs.readFileSync(`${process.env.HOME}/.minikube/apiserver.key`).toString() ,
 		caCert: fs.readFileSync(`${process.env.HOME}/.minikube/ca.crt`).toString()
 	}
+})
+
+var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
+	console.log('watch pod  log: ' + data.type)
+}, function(err){
+	console.log(err)
 })
 
 describe('kubeapi ',function() 
@@ -31,15 +37,15 @@ describe('kubeapi ',function()
 	
 	// it('test api GET by watch -> get rc list', function(done)
 	// {
-		// var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
-			
-		// }, function(err){
-		// 	console.log(err)
-		// })
+	// 	var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
+	// 		console.log(data)
+	// 	}, function(err){
+	// 		console.log(err)
+	// 	})
 
-		// setTimeout(function() {
-		// 	res.emit('close')
-		// }, 2000)
+	// 	setTimeout(function() {
+	// 		// res.emit('close')
+	// 	}, 2000)
 	// 	// done()
 	// })
 
@@ -47,6 +53,7 @@ describe('kubeapi ',function()
 		var rc = require('./rc/nginx-rc.json')
 		kubeapi.post('namespaces/default/replicationcontrollers', rc, function(err, data){
 			assert(data.spec.replicas === 3)
+			// console.log(data)
 			return done()
 		})
 	})
