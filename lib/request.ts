@@ -216,9 +216,3 @@ export class Request
         return source
     }
 }
-
-declare function require(name:string)
-
-export default (conf)=>{
-    return new Request(conf)
-}
