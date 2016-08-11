@@ -5,7 +5,7 @@ const Observable = Rx.Observable
 
 declare var Buffer
 
-class Request
+export class Request
 {
     private strictSSL
     private domain
@@ -215,10 +215,4 @@ class Request
 
         return source
     }
-}
-
-declare function require(name:string)
-
-export = (conf)=>{
-    return new Request(conf)
 }
