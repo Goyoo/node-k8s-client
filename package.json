@@ -13,13 +13,12 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "typings-install": "tsd install",
     "build": "webpack",
     "watch": "npm run build -- --watch",
     "start": "webpack --watch"
   },
   "dependencies": {
-    "promise": "^7.1.1",
+    "@types/node": "^6.0.32",
     "request": "^2.72.0",
     "rx": "^4.1.0",
     "underscore": "^1.8.3"
@@ -31,8 +30,7 @@
     "json-loader": "^0.5.4",
     "mocha": "^2.5.3",
     "ts-loader": "^0.8.2",
-    "tsd": "^0.6.5",
-    "typescript": "^1.8.10",
+    "typescript": "^2.0.0",
     "webpack": "^1.13.1"
   },
   "license": "MIT"

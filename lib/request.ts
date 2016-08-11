@@ -1,12 +1,11 @@
 const request = require('request')
-const Promise = require('promise')
 const Rx = require('rx')
 const _ = require('underscore')
 const Observable = Rx.Observable
 
 declare var Buffer
 
-class Request 
+export class Request
 {
     private strictSSL;
     private domain
@@ -37,7 +36,7 @@ class Request
         const options = opts || {}
 
         options.url = this.domain + path
-        
+
         options.headers = {
             "Content-Type": "application/json"
         }
@@ -62,13 +61,13 @@ class Request
 
     public async get(url: string, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             request.get(this.getRequestOptions(url), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(JSON.parse(data))
             })
         })
@@ -77,16 +76,16 @@ class Request
 
         return promise
     }
-    
+
 	public post(url, body, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             request.post(this.getRequestOptions(url, {json: body}), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -98,13 +97,13 @@ class Request
 
 	public put(url, body, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             request.put(this.getRequestOptions(url, {json: body}), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -116,7 +115,7 @@ class Request
 
 	public patch(url, body, done?): Promise<any>
     {
-        const promise = new Promise((resolve, reject) => 
+        const promise = new Promise((resolve, reject) =>
         {
             const options = this.getRequestOptions(url, { json:  body })
 
@@ -128,7 +127,7 @@ class Request
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -144,14 +143,14 @@ class Request
             done = json
             json = undefined
         }
-        
-        const promise = new Promise((resolve, reject) => 
+
+        const promise = new Promise((resolve, reject) =>
         {
             request.del(this.getRequestOptions(url, json), function(err, res, data)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
-                
+
                 resolve(data)
             })
         })
@@ -185,20 +184,20 @@ class Request
                     try {
                         jsonStr.split('\n').forEach(function(jsonStr){
                             if( !jsonStr )
-                                return 
+                                return
                             const json = JSON.parse(jsonStr);
                             observer.onNext(json);
                         })
                         jsonStr = '';
                     }
-                    catch(err){ 
+                    catch(err){
                         observer.onError(err)
                     }
                 }
             }).on('error', function(err){
-                observer.onError(err)  
+                observer.onError(err)
             }).on('close', function(){
-                observer.onError() 
+                observer.onError()
             })
         })
 
@@ -210,7 +209,7 @@ class Request
                 if( _.isFunction(exit) )
                     exit(err)
             })
-            
+
             return res
         }
 
@@ -220,6 +219,6 @@ class Request
 
 declare function require(name:string)
 
-export = (conf)=>{
+export default (conf)=>{
     return new Request(conf)
 }
