@@ -38,7 +38,7 @@ export class Request
         options.url = this.domain + path
 
         options.headers = {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
 
         options.strictSSL = this.strictSSL
@@ -120,7 +120,7 @@ export class Request
             const options = this.getRequestOptions(url, { json:  body })
 
             options.headers = {
-                "Content-Type": "application/json-patch+json"
+                'Content-Type': 'application/json-patch+json'
             }
 
             request.patch(options, function(err, res, data)
