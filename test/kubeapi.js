@@ -4,9 +4,6 @@ const expect = require('chai').expect
 	, assert = require('chai').assert
 	, jsonpatch = require('fast-json-patch')
 
-
-// return console.log(K8s.api)
-
 var kubeapi = K8s.api({
 	endpoint: 'https://192.168.99.100:8443',
 	version: '/api/v1',
