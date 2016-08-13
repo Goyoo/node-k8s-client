@@ -5,7 +5,7 @@ Node.js client library for Google's Kubernetes Kubectl And API
 
 
 # build
-```
+``` 
     git clone https://github.com/Goyoo/node-k8s-client.git
     npm install
     npm run build

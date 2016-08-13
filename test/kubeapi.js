@@ -20,6 +20,7 @@ var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
 	console.log(err)
 })
 
+
 describe('kubeapi ',function() 
 {
 	this.timeout(1000000)
@@ -34,16 +35,15 @@ describe('kubeapi ',function()
 	
 	// it('test api GET by watch -> get rc list', function(done)
 	// {
-	// 	var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
-	// 		console.log(data)
+	// 	var res = kubeapi.watch('watch/namespaces/default/pods', function(data)
+	// 	{
+	// 		console.log('watch pod  log: ' + data.type)
+	// 		res.emit('close')
+			
 	// 	}, function(err){
-	// 		console.log(err)
-	// 	})
+	// 		console.log('exit',err)
+	// 	}, 20000)
 
-	// 	setTimeout(function() {
-	// 		// res.emit('close')
-	// 	}, 2000)
-	// 	// done()
 	// })
 
 	it('test api POST -> create rc', function(done){
@@ -89,5 +89,4 @@ describe('kubeapi ',function()
 			done()
 		})
 	})
-	
 })
