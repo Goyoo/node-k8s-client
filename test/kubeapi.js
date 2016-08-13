@@ -19,7 +19,7 @@ var res = kubeapi.watch('watch/namespaces/default/pods', function(data){
 }, function(err){
 	console.log(err)
 })
-
+ 
 
 describe('kubeapi ',function() 
 {
