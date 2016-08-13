@@ -31,7 +31,7 @@ describe('kubeapi ',function()
 			assert(data.items.length===0)
 			done(err)
 		})
-	})
+	}) 
 	
 	// it('test api GET by watch -> get rc list', function(done)
 	// {
