@@ -243,7 +243,7 @@ class Kubectl
 
     public scale(name: string, replicas: string, flags?, done?: (err, data)=>void)
     {
-        if( this.type !== 'replicationcontrollers' )
+        if( this.type !== 'replicationcontrollers' && this.type !== 'deployments' )
             throw new Error('not a function')
         
         if( _.isFunction(flags) ){
