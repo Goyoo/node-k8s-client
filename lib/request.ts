@@ -77,6 +77,25 @@ export class Request
         return promise
     }
 
+
+    public async logs(url: string, done?): Promise<any>
+    { 
+        const promise = new Promise((resolve, reject) =>
+        {
+            request.get(this.getRequestOptions(url), function(err, res, data)
+            {
+                if( err || res.statusCode < 200 || res.statusCode >= 300 )
+                    return reject(err || data)
+
+                resolve(data)
+            })
+        })
+
+        this.callbackFunction(promise, done)
+
+        return promise
+    }
+
 	public post(url, body, done?): Promise<any>
     {
         const promise = new Promise((resolve, reject) =>
