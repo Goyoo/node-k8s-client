@@ -78,7 +78,7 @@ export class Request
     }
 
 
-    public async logs(url: string, done?): Promise<any>
+    public async log(url: string, done?): Promise<any>
     { 
         const promise = new Promise((resolve, reject) =>
         {
