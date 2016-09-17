@@ -32,7 +32,15 @@ describe('kubeapi ',function()
 			done(err)
 		})
 	}) 
-	
+
+	// it('test api logs -> get pod log', function(done)
+	// {
+	// 	kubeapi.log('namespaces/default/pods/helloworld-v1-6q0cr/log', function(err, data){
+	// 		console.log(data)
+	// 		done(err)
+	// 	})
+	// }) 
+	// return
 	// it('test api GET by watch -> get rc list', function(done)
 	// {
 	// 	var res = kubeapi.watch('watch/namespaces/default/pods', function(data)
@@ -54,7 +62,7 @@ describe('kubeapi ',function()
 			return done()
 		})
 	})
-	
+
 	it('test api PATCH -> update rc replicas', function(done)
 	{
 
