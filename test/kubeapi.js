@@ -39,7 +39,7 @@ describe('kubeapi ',function()
 	// 		console.log(data)
 	// 		done(err)
 	// 	})
-	// }) 
+	// })  
 	// return
 	// it('test api GET by watch -> get rc list', function(done)
 	// {
