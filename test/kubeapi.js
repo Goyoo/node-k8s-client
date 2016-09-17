@@ -33,7 +33,7 @@ describe('kubeapi ',function()
 		})
 	}) 
 
-	// it('test api logs -> get pod log', function(done)
+	// it('test api log -> get pod log', function(done)
 	// {
 	// 	kubeapi.log('namespaces/default/pods/helloworld-v1-6q0cr/log', function(err, data){
 	// 		console.log(data)
