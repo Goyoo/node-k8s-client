@@ -197,8 +197,8 @@ kubeapi.watch('watch/namespaces/default/pods', [timeout]).subscribe(data=>{
     kubect.pod.delete('pod_name').then()
     kubect.pod.delete('pod_name', ['--grace-period=0']).then()
     //async/await
-    const data = kubect.pod.delete('pod_name')
-    const data = kubect.pod.delete('pod_name',['--grace-period=0'])
+    const data = await kubect.pod.delete('pod_name')
+    const data = await kubect.pod.delete('pod_name',['--grace-period=0'])
 ```
 
 ### excute command
