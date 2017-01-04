@@ -324,25 +324,25 @@ kubectl.service.delete('nginx', function(err, data){})
 ### get node list
 
 ```js
-kubectl.node.list(function(err, pods){})
+kubectl.node.list(function(err, nodes){})
 ```
 
 ### get a node
 
 ```js
-kubectl.node.get('nginx', function(err, pod){})
+kubectl.node.get('node1', function(err, node){})
 ```
 
 ### create a node
 
 ```js
-kubectl.node.create('/:path/nodes/node1.yaml'), function(err, data){})
+kubectl.node.create('/:path/nodes/node1.yaml'), function(err, node){})
 ```
 
 ### delete a node
 
 ```js
-kubectl.node.delete('nginx', function(err, data){})
+kubectl.node.delete('node1', function(err, node){})
 
 
 ```
