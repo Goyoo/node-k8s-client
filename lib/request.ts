@@ -44,15 +44,18 @@ export class Request
         options.strictSSL = this.strictSSL
 
         if (this.auth) {
+            if (this.auth.caCert) {
+                options.ca = this.auth.caCert
+            }
+            
             if (this.auth.username && this.auth.password) {
                 const authstr = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
                 options.headers.Authorization = `Basic ${authstr}`
             } else if (this.auth.token) {
                 options.headers.Authorization = `Bearer ${this.auth.token}`
-            } else if (this.auth.clientCert && this.auth.clientKey && this.auth.caCert) {
+            } else if (this.auth.clientCert && this.auth.clientKey) {
                 options.cert = this.auth.clientCert
                 options.key = this.auth.clientKey
-                options.ca = this.auth.caCert
             }
         }
 
