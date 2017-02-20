@@ -45,8 +45,9 @@ export class Request
 
         if (this.auth) {
             if (this.auth.caCert) {
-		options.ca = this.auth.caCert
+              options.ca = this.auth.caCert
             }
+
             if (this.auth.username && this.auth.password) {
                 const authstr = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
                 options.headers.Authorization = `Basic ${authstr}`
