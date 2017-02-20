@@ -141,9 +141,7 @@ export class Request
         {
             const options = this.getRequestOptions(url, { json:  body })
 
-            options.headers = {
-                'Content-Type': 'application/json-patch+json'
-            }
+            options.headers['Content-Type'] = 'application/strategic-merge-patch+json';
 
             request.patch(options, function(err, res, data)
             {
