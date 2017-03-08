@@ -135,13 +135,25 @@ export class Request
         return promise
     }
 
-	public patch(url, body, done?): Promise<any>
+	public patch(url, body, _options?, done?): Promise<any>
     {
+        if( typeof (_options) === 'function' ){
+            done = _options
+            _options = undefined
+        }
+
         const promise = new Promise((resolve, reject) =>
         {
             const options = this.getRequestOptions(url, { json:  body })
 
             options.headers['Content-Type'] = 'application/json-patch+json'
+
+            if( _options && _options.headers )
+            {
+                for( let key in _options.headers ){
+                    options.headers[key] = _options.headers[key]
+                }
+            }
 
             request.patch(options, function(err, res, data)
             {
