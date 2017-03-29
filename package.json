@@ -20,6 +20,7 @@
   "dependencies": {
     "request": "^2.72.0",
     "rx": "^4.1.0",
+    "js-yaml": "^3.8.2",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -29,9 +30,9 @@
     "fast-json-patch": "^0.5.7",
     "json-loader": "^0.5.4",
     "mocha": "^3.2.0",
+    "temp": "^0.8.3",
     "ts-loader": "^0.8.2",
     "typescript": "^2.0.0",
-    "js-yaml": "^3.8.2",
     "webpack": "^1.13.1"
   },
   "license": "MIT"

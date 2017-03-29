@@ -3,6 +3,7 @@ const Rx = require('rx')
 const _ = require('underscore')
 const Observable = Rx.Observable
 const fs = require('fs')
+const jsyaml = require('js-yaml')
 
 declare var Buffer
 
@@ -14,9 +15,12 @@ export class Request
 
     constructor(conf: any)
     {
-        var context = this.readContext(conf.kubeconfig)
-        var cluster = this.readCluster(conf.kubeconfig, context)
-        var user = this.readUser(conf.kubeconfig, context)
+        if (conf.kubeconfig) {
+            var kubeconfig = jsyaml.safeLoad(fs.readFileSync(conf.kubeconfig))
+            var context = this.readContext(kubeconfig)
+            var cluster = this.readCluster(kubeconfig, context)
+            var user = this.readUser(kubeconfig, context)
+        }
 
         this.auth = conf.auth || {}
 

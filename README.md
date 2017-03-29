@@ -44,7 +44,7 @@ var kubeapi = K8s.api({
 
 // Configure using kubeconfig
 var kubeapi = K8s.api({
-    kubeconfig: '/etc/cluster1.yaml':JSON
+    kubeconfig: '/etc/cluster1.yaml'
     ,version: '/api/v1'
 })
 
