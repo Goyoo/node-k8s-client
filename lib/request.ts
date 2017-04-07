@@ -2,6 +2,8 @@ const request = require('request')
 const Rx = require('rx')
 const _ = require('underscore')
 const Observable = Rx.Observable
+const fs = require('fs')
+const jsyaml = require('js-yaml')
 
 declare var Buffer
 
@@ -13,10 +15,116 @@ export class Request
 
     constructor(conf: any)
     {
-        this.auth = conf.auth
+        if (conf.kubeconfig) {
+            var kubeconfig = jsyaml.safeLoad(fs.readFileSync(conf.kubeconfig))
+            var context = this.readContext(kubeconfig)
+            var cluster = this.readCluster(kubeconfig, context)
+            var user = this.readUser(kubeconfig, context)
+        }
+
+        this.auth = conf.auth || {}
+
+        this.auth.caCert = this.auth.caCert || this.readCaCert(cluster)
+        this.auth.clientKey = this.auth.clientKey || this.readClientKey(user)
+        this.auth.clientCert = this.auth.clientCert || this.readClientCert(user)
+        this.auth.token = this.auth.token || this.readUserToken(user)
+        this.auth.username = this.auth.username || this.readUsername(user)
+        this.auth.password = this.auth.password || this.readPassword(user)
+
         // only set to false if explictly false in the config
         this.strictSSL = (conf.strictSSL !== false)
-        this.domain = `${conf.endpoint}${conf.version}/`
+
+        var endpoint = conf.endpoint || this.readEndpoint(cluster)
+        this.domain = `${endpoint}${conf.version}/`
+    }
+
+    // Returns Context JSON from kubeconfig
+    private readContext(kubeconfig)
+    {
+        if (!kubeconfig) return
+        return kubeconfig.contexts.find(x => x.name === kubeconfig['current-context'])
+    }
+
+    // Returns Cluster JSON from context at kubeconfig
+    private readCluster(kubeconfig, context)
+    {
+        if (!kubeconfig || !context) return
+        return kubeconfig.clusters.find(x => x.name === context.name)
+    }
+
+    // Returns Cluster JSON from context at kubeconfig
+    private readUser(kubeconfig, context)
+    {
+        if (!kubeconfig) return
+        return kubeconfig.users.find(x => x.name === context.context.user)
+    }
+
+    // Returns CaCert from kubeconfig
+    private readCaCert(cluster)
+    {
+        if (!cluster) return
+        var certificate_authority = cluster.cluster['certificate-authority']
+        if (certificate_authority) {
+            return fs.readFileSync(certificate_authority).toString()
+        }
+        var certificate_authority_data = cluster.cluster['certificate-authority-data']
+        if (certificate_authority_data) {
+            return Buffer.from(certificate_authority_data, 'base64').toString("ascii")
+        }
+    }
+
+    // Returns CaCert from kubeconfig
+    private readClientKey(user)
+    {
+        if (!user) return
+        var client_key = user.user['client-key']
+        if (client_key) {
+            return fs.readFileSync(client_key).toString()
+        }
+        var client_key_data = user.user['client-key-data']
+        if (client_key_data) {
+            return Buffer.from(client_key_data, 'base64').toString("ascii")
+        }
+    }
+
+    // Returns CaCert from kubeconfig
+    private readClientCert(user)
+    {
+        if (!user) return
+        var client_certificate = user.user['client-certificate']
+        if (client_certificate) {
+            return fs.readFileSync(client_certificate).toString()
+        }
+        var client_certificate_data = user.user['client-certificate-data']
+        if (client_certificate_data) {
+            return Buffer.from(client_certificate_data, 'base64').toString("ascii")
+        }
+    }
+
+    // Returns User token from kubeconfig
+    private readUserToken(user)
+    {
+        if (!user) return
+        return user.user['token']
+    }
+
+    // Returns User token from kubeconfig
+    private readUsername(user)
+    {
+        if (!user) return
+        return user.user['username']
+    }
+
+    private readPassword(user)
+    {
+        if (!user) return
+        return user.user['password']
+    }
+
+    private readEndpoint(cluster)
+    {
+       if (!cluster) return
+       return cluster.cluster['server']
     }
 
     private callbackFunction(primise, callback)

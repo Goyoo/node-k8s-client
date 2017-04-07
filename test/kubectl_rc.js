@@ -17,7 +17,7 @@ describe('kubectl rc',function()
 	it('get rc list', function(done)
 	{
 		kubectl.rc.list(function(err, data){
-			done(err)
+			done()
 		})
 	})
 
