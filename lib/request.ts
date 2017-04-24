@@ -49,7 +49,7 @@ export class Request
     private readCluster(kubeconfig, context)
     {
         if (!kubeconfig || !context) return
-        return kubeconfig.clusters.find(x => x.name === context.name)
+        return kubeconfig.clusters.find(x => x.name === context.context.cluster)
     }
 
     // Returns Cluster JSON from context at kubeconfig
@@ -155,7 +155,7 @@ export class Request
             if (this.auth.caCert) {
                 options.ca = this.auth.caCert
             }
-            
+
             if (this.auth.username && this.auth.password) {
                 const authstr = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
                 options.headers.Authorization = `Basic ${authstr}`
@@ -190,7 +190,7 @@ export class Request
 
 
     public async log(url: string, done?): Promise<any>
-    { 
+    {
         const promise = new Promise((resolve, reject) =>
         {
             request.get(this.getRequestOptions(url), function(err, res, data)
