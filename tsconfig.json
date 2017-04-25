@@ -7,7 +7,9 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "suppressImplicitAnyIndexErrors":true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "declaration": true,
+    "declarationDir": "typings"
   },
   "exclude": [
       "node_modules"

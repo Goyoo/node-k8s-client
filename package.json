@@ -11,6 +11,7 @@
     "url": "https://github.com/goyoo/node-k8s-client/issues"
   },
   "main": "index.js",
+  "typings": "typings",
   "scripts": {
     "test": "mocha test",
     "build": "webpack",
