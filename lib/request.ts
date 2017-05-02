@@ -153,7 +153,7 @@ export class Request
 
         if (this.auth) {
             if (this.auth.caCert) {
-                options.ca = this.auth.caCert
+              options.ca = this.auth.caCert
             }
 
             if (this.auth.username && this.auth.password) {
