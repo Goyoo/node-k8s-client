@@ -17,7 +17,7 @@ export class Request
     {
         if (conf.kubeconfig) {
             var kubeconfig = jsyaml.safeLoad(fs.readFileSync(conf.kubeconfig))
-            var context = this.readContext(kubeconfig)
+            var context = conf.context || this.readContext(kubeconfig)
             var cluster = this.readCluster(kubeconfig, context)
             var user = this.readUser(kubeconfig, context)
         }
