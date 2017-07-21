@@ -331,7 +331,7 @@ class Kubectl
 
 declare function require(name:string)
 
-export = (conf)=>
+export = (conf):any=>
 {
 	return {
     // short names are just aliases to longer names
