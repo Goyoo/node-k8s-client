@@ -1,10 +1,4 @@
 
-# LOOKING FOR NEW PROJECT OWNER
-
-
-
-
-
 
 # Nodejs Kubernetes client
 
