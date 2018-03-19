@@ -8,6 +8,7 @@ class Kubectl
     private kubeconfig
     private namespace
     private endpoint
+    private context
 
     constructor(type, conf)
     {
@@ -16,6 +17,7 @@ class Kubectl
         this.kubeconfig = conf.kubeconfig || ''
         this.namespace = conf.namespace || ''
         this.endpoint = conf.endpoint || ''
+        this.context = conf.context || ''
     }
 
     private spawn(args, done)
@@ -32,6 +34,10 @@ class Kubectl
         
         if (this.namespace) {
             ops.push('--namespace='+this.namespace)
+        }
+
+        if (this.context) {
+            ops.push('--context='+this.context)
         }
 
         const kube = spawn(this.binary, ops.concat(args))
@@ -353,7 +359,8 @@ export = (conf):any=>
 		, ep: new Kubectl('endpoints', conf)
 		, ingress: new Kubectl('ingress', conf)
 		, ing: new Kubectl('ingress', conf)
-		, job: new Kubectl('job', conf)
+        , job: new Kubectl('job', conf)
+        , context: new Kubectl('context', conf)
         , command: function(){
             arguments[0] = arguments[0].split(' ')
             return this.pod.command.apply(this.pod, arguments)
