@@ -5,21 +5,21 @@ const Observable = Rx.Observable
 const fs = require('fs')
 const jsyaml = require('js-yaml')
 
-declare var Buffer
+declare var Buffer: any
 
 export class Request
 {
-    private strictSSL
-    private domain
-    private auth
+    private strictSSL: any
+    private domain: any
+    private auth: any
 
     constructor(conf: any)
     {
         if (conf.kubeconfig) {
-            var kubeconfig = jsyaml.safeLoad(fs.readFileSync(conf.kubeconfig))
-            var context = conf.context || this.readContext(kubeconfig)
-            var cluster = this.readCluster(kubeconfig, context)
-            var user = this.readUser(kubeconfig, context)
+            var kubeconfig: any = jsyaml.safeLoad(fs.readFileSync(conf.kubeconfig))
+            var context: any = conf.context || this.readContext(kubeconfig)
+            var cluster: any = this.readCluster(kubeconfig, context)
+            var user: any = this.readUser(kubeconfig, context)
         }
 
         this.auth = conf.auth || {}
@@ -39,56 +39,56 @@ export class Request
     }
 
     // Returns Context JSON from kubeconfig
-    private readContext(kubeconfig)
+    private readContext(kubeconfig: any)
     {
         if (!kubeconfig) return
-        return kubeconfig.contexts.find(x => x.name === kubeconfig['current-context'])
+        return kubeconfig.contexts.find((x: any) => x.name === kubeconfig['current-context'])
     }
 
     // Returns Cluster JSON from context at kubeconfig
-    private readCluster(kubeconfig, context)
+    private readCluster(kubeconfig: any, context: any)
     {
         if (!kubeconfig || !context) return
-        return kubeconfig.clusters.find(x => x.name === context.context.cluster)
+        return kubeconfig.clusters.find((x: any) => x.name === context.context.cluster)
     }
 
     // Returns Cluster JSON from context at kubeconfig
-    private readUser(kubeconfig, context)
+    private readUser(kubeconfig: any, context: any)
     {
         if (!kubeconfig) return
-        return kubeconfig.users.find(x => x.name === context.context.user)
+        return kubeconfig.users.find((x: any) => x.name === context.context.user)
     }
 
     // Returns CaCert from kubeconfig
-    private readCaCert(cluster)
+    private readCaCert(cluster: any)
     {
         if (!cluster) return
-        var certificate_authority = cluster.cluster['certificate-authority']
+        var certificate_authority: any = cluster.cluster['certificate-authority']
         if (certificate_authority) {
             return fs.readFileSync(certificate_authority).toString()
         }
-        var certificate_authority_data = cluster.cluster['certificate-authority-data']
+        var certificate_authority_data: any = cluster.cluster['certificate-authority-data']
         if (certificate_authority_data) {
             return Buffer.from(certificate_authority_data, 'base64').toString("ascii")
         }
     }
 
     // Returns CaCert from kubeconfig
-    private readClientKey(user)
+    private readClientKey(user: any)
     {
         if (!user) return
-        var client_key = user.user['client-key']
+        var client_key: any = user.user['client-key']
         if (client_key) {
             return fs.readFileSync(client_key).toString()
         }
-        var client_key_data = user.user['client-key-data']
+        var client_key_data: any = user.user['client-key-data']
         if (client_key_data) {
             return Buffer.from(client_key_data, 'base64').toString("ascii")
         }
     }
 
     // Returns CaCert from kubeconfig
-    private readClientCert(user)
+    private readClientCert(user: any)
     {
         if (!user) return
         var client_certificate = user.user['client-certificate']
@@ -102,38 +102,38 @@ export class Request
     }
 
     // Returns User token from kubeconfig
-    private readUserToken(user)
+    private readUserToken(user: any)
     {
         if (!user) return
         return user.user['token']
     }
 
     // Returns User token from kubeconfig
-    private readUsername(user)
+    private readUsername(user: any)
     {
         if (!user) return
         return user.user['username']
     }
 
-    private readPassword(user)
+    private readPassword(user: any)
     {
         if (!user) return
         return user.user['password']
     }
 
-    private readEndpoint(cluster)
+    private readEndpoint(cluster: any)
     {
        if (!cluster) return
        return cluster.cluster['server']
     }
 
-    private callbackFunction(primise, callback)
+    private callbackFunction(promise: any, callback: Function)
     {
         if( _.isFunction(callback) )
         {
-            primise.then(data=>{
+            promise.then((data: any)=>{
                 callback(null, data)
-            }).catch(err=>{
+            }).catch((err: any)=>{
                 callback(err)
             })
         }
@@ -141,7 +141,7 @@ export class Request
 
     private getRequestOptions(path: string, opts?: any)
     {
-        const options = opts || {}
+        const options: any = opts || {}
 
         options.url = this.domain + path
 
@@ -157,7 +157,7 @@ export class Request
             }
 
             if (this.auth.username && this.auth.password) {
-                const authstr = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
+                const authstr: string = new Buffer(this.auth.username + ':' + this.auth.password).toString('base64')
                 options.headers.Authorization = `Basic ${authstr}`
             } else if (this.auth.token) {
                 options.headers.Authorization = `Bearer ${this.auth.token}`
@@ -170,11 +170,11 @@ export class Request
         return options
     }
 
-    public async get(url: string, done?): Promise<any>
+    public async get(url: string, done?: any): Promise<any>
     {
         const promise = new Promise((resolve, reject) =>
         {
-            request.get(this.getRequestOptions(url), function(err, res, data)
+            request.get(this.getRequestOptions(url), function(err: any, res: any, data: any)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
@@ -189,11 +189,11 @@ export class Request
     }
 
 
-    public async log(url: string, done?): Promise<any>
+    public async log(url: string, done?: any): Promise<any>
     {
         const promise = new Promise((resolve, reject) =>
         {
-            request.get(this.getRequestOptions(url), function(err, res, data)
+            request.get(this.getRequestOptions(url), function(err: any, res: any, data: any)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
@@ -207,11 +207,11 @@ export class Request
         return promise
     }
 
-	public post(url, body, done?): Promise<any>
+	public post(url: string, body: any, done?: any): Promise<any>
     {
         const promise = new Promise((resolve, reject) =>
         {
-            request.post(this.getRequestOptions(url, {json: body}), function(err, res, data)
+            request.post(this.getRequestOptions(url, {json: body}), function(err: any, res: any, data: any)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
@@ -225,11 +225,11 @@ export class Request
         return promise
     }
 
-	public put(url, body, done?): Promise<any>
+	public put(url: string, body: any, done?: any): Promise<any>
     {
         const promise = new Promise((resolve, reject) =>
         {
-            request.put(this.getRequestOptions(url, {json: body}), function(err, res, data)
+            request.put(this.getRequestOptions(url, {json: body}), function(err: any, res: any, data: any)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
@@ -243,7 +243,7 @@ export class Request
         return promise
     }
 
-	public patch(url, body, _options?, done?): Promise<any>
+	public patch(url: string, body: any, _options?: any, done?: any): Promise<any>
     {
         if( typeof (_options) === 'function' ){
             done = _options
@@ -263,7 +263,7 @@ export class Request
                 }
             }
 
-            request.patch(options, function(err, res, data)
+            request.patch(options, function(err: any, res: any, data: any)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
@@ -277,7 +277,7 @@ export class Request
         return promise
     }
 
-	public delete(url, json?, done?): Promise<any>
+	public delete(url: string, json?: any, done?: any): Promise<any>
     {
         if( _.isFunction(json) ){
             done = json
@@ -286,7 +286,7 @@ export class Request
 
         const promise = new Promise((resolve, reject) =>
         {
-            request.del(this.getRequestOptions(url, json), function(err, res, data)
+            request.del(this.getRequestOptions(url, json), function(err: any, res: any, data: any)
             {
                 if( err || res.statusCode < 200 || res.statusCode >= 300 )
                     return reject(err || data)
@@ -300,18 +300,18 @@ export class Request
         return promise
     }
 
-	public watch(url, message?, exit?, timeout?)
+	public watch(url: string, message?: any, exit?: any, timeout?: any)
     {
         if( _.isNumber(message) ){
             timeout = message
             message = undefined
         }
-        var res
+        var res: any
 
-        const source = Rx.Observable.create((observer)=>
+        const source = Observable.create((observer: any)=>
         {
             var jsonStr = ''
-            res = request.get(this.getRequestOptions(url, { timeout: timeout }),function(e){ }).on('data', function(data)
+            res = request.get(this.getRequestOptions(url, { timeout: timeout }),function(){ }).on('data', function(data: any)
             {
                 if (res.response.headers['content-type']==='text/plain') {
                     observer.onNext(data.toString())
@@ -334,7 +334,7 @@ export class Request
                         observer.onError(err)
                     }
                 }
-            }).on('error', function(err){
+            }).on('error', function(err: any){
                 observer.onError(err)
             }).on('close', function(){
                 observer.onError()
@@ -343,9 +343,9 @@ export class Request
 
         if( _.isFunction(message) )
         {
-            source.subscribe(data=>{
+            source.subscribe((data: any)=>{
                 message(data)
-            }, err=>{
+            }, (err: any)=>{
                 if( _.isFunction(exit) )
                     exit(err)
             })
