@@ -3,14 +3,14 @@ const _ = require('underscore')
 
 class Kubectl
 {
-    private type
-    private binary
-    private kubeconfig
-    private namespace
-    private endpoint
-    private context
+    private type: any
+    private binary: any
+    private kubeconfig: any
+    private namespace: any
+    private endpoint: any
+    private context: any
 
-    constructor(type, conf)
+    constructor(type: any, conf: any)
     {
         this.type = type
         this.binary = conf.binary || 'kubectl'
@@ -20,9 +20,9 @@ class Kubectl
         this.context = conf.context || ''
     }
 
-    private spawn(args, done)
+    private spawn(args: any, done: any)
     {
-        const ops = new Array()
+        const ops: any = new Array()
 
         if( this.kubeconfig ){
             ops.push('--kubeconfig='+this.kubeconfig)
@@ -40,19 +40,19 @@ class Kubectl
             ops.push('--context='+this.context)
         }
 
-        const kube = spawn(this.binary, ops.concat(args))
-            , stdout = []
-            , stderr = []
+        const kube: any = spawn(this.binary, ops.concat(args))
+            , stdout: any[] = []
+            , stderr: any[] = []
         
-        kube.stdout.on('data', function (data) {
+        kube.stdout.on('data', function (data: any) {
             stdout.push(data.toString())
         })
         
-        kube.stderr.on('data', function (data) {
+        kube.stderr.on('data', function (data: any) {
             stderr.push(data.toString())
         })
         
-        kube.on('close', function (code) 
+        kube.on('close', function () 
         {
             if( !stderr.length )
                 return done(null, stdout.join(''))
@@ -61,26 +61,26 @@ class Kubectl
         })
     }
 
-    private callbackFunction(primise, callback)
+    private callbackFunction(promise: any, callback: Function)
     {
         if( _.isFunction(callback) )
         {
-            primise.then(data=>{
+            promise.then((data: any)=>{
                 callback(null, data)
-            }).catch(err=>{
+            }).catch((err: any)=>{
                 callback(err)
             })
         }
     }
 
-    public command(cmd, callback): Promise<any>
+    public command(cmd: any, callback: Function): Promise<any>
     {
         if( _.isString(cmd) )
             cmd = cmd.split(' ')
             
         const promise = new Promise((resolve, reject) => 
         {
-            this.spawn(cmd, function(err, data)
+            this.spawn(cmd, function(err: any, data: any)
             {
                 if( err )
                     return reject(err || data)
@@ -94,14 +94,14 @@ class Kubectl
         return promise
     }
 
-    public list(selector, flags?, done?)
+    public list(selector: any, flags: any, done: any)
     {
         if( !this.type )
             throw new Error('not a function')
         
         if( typeof selector === 'object')
         {
-            var args = '--selector='
+            var args: any = '--selector='
             
             for( var key in selector )
                 args += (key + '=' + selector[key])
@@ -120,12 +120,12 @@ class Kubectl
 
         flags = flags || []
         
-        const action = ['get', this.type , selector, '--output=json'].concat(flags)
+        const action: any = ['get', this.type , selector, '--output=json'].concat(flags)
 
         return this.command(action, done)
     }
 
-    public get(name: string, flags?, done?: (err, data)=>void)
+    public get(name: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
@@ -144,7 +144,7 @@ class Kubectl
         
     }
 
-    public create(filepath: string, flags?, done?: (err, data)=>void)
+    public create(filepath: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
@@ -156,12 +156,12 @@ class Kubectl
 
         flags = flags || []
 
-        const action = ['create', '-f', filepath].concat(flags)
+        const action: any = ['create', '-f', filepath].concat(flags)
 
         return this.command(action, done)
     }
 
-    public delete(id: string, flags, done?: (err, data)=>void)
+    public delete(id: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
@@ -173,12 +173,12 @@ class Kubectl
 
         flags = flags || []
 
-        const action = ['delete', this.type, id].concat(flags)
+        const action: any = ['delete', this.type, id].concat(flags)
 
         return this.command(action, done)
     }
 
-    public update(filepath: string, flags?, done?: (err, data)=>void)
+    public update(filepath: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
@@ -190,12 +190,12 @@ class Kubectl
 
         flags = flags || []
 
-        const action = ['update', '-f', filepath].concat(flags)
+        const action: any = ['update', '-f', filepath].concat(flags)
 
         return this.command(action, done)
     }
 
-    public apply(name: string, json: Object, flags?, done?: (err, data)=>void)
+    public apply(name: string, json: Object, flags: any, done: (err: any, data: any)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
@@ -206,12 +206,12 @@ class Kubectl
         }
 
         flags = flags || []
-        const action = ['update',  this.type, name, '--patch='+ JSON.stringify(json)].concat(flags)
+        const action: any = ['update',  this.type, name, '--patch='+ JSON.stringify(json)].concat(flags)
 
         return this.command(action, done)
     }
 
-    public rollingUpdateByFile(name: string, filepath: string, flags?, done?: (err, data)=>void)
+    public rollingUpdateByFile(name: string, filepath: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function')
@@ -223,13 +223,13 @@ class Kubectl
         }
 
         flags = flags || []
-        const action = ['rolling-update',  name, '-f', filepath, '--update-period=0s'].concat(flags)
+        const action: any = ['rolling-update',  name, '-f', filepath, '--update-period=0s'].concat(flags)
 
         return this.command(action, done)
     }
 
 
-    public rollingUpdate(name: string, image: string, flags?, done?: (err, data)=>void)
+    public rollingUpdate(name: string, image: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( this.type !== 'replicationcontrollers' )
             throw new Error('not a function') 
@@ -242,12 +242,12 @@ class Kubectl
 
         flags = flags || []
 
-        const action = ['rolling-update',  name, '--image=' + image, '--update-period=0s'].concat(flags)
+        const action: any = ['rolling-update',  name, '--image=' + image, '--update-period=0s'].concat(flags)
 
         return this.command(action, done)
     }
 
-    public scale(name: string, replicas: string, flags?, done?: (err, data)=>void)
+    public scale(name: string, replicas: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( this.type !== 'replicationcontrollers' && this.type !== 'deployments' )
             throw new Error('not a function')
@@ -258,20 +258,20 @@ class Kubectl
         }
 
         flags = flags || []
-        const action = ['scale', '--replicas=' + replicas, 'replicationcontrollers', name].concat(flags)
+        const action: any = ['scale', '--replicas=' + replicas, 'replicationcontrollers', name].concat(flags)
 
         return this.command(action, done)
     }
 
-    public logs(name: string, flags?, done?: (err, data)=>void)
+    public logs(name: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( this.type !== 'pods' )
             throw new Error('not a function')
 
-        var action = new Array('logs')
+        var action: any = new Array('logs')
 
         if (name.indexOf(' ') > -1) {
-            var names = name.split(/ /)
+            var names: any = name.split(/ /)
             action.push(names[0])
             action.push(names[1])
         } else {
@@ -289,12 +289,12 @@ class Kubectl
         return this.command(action.concat(flags), done)
     }
 
-    public describe(name: string, flags?, done?: (err, data)=>void)
+    public describe(name: string, flags: any, done: (err: any, data: any)=>void)
     {
         if( !this.type )
             throw new Error('not a function')
 
-        var action = new Array('describe', this.type)
+        var action: any = new Array('describe', this.type)
 
         if ( name === null ) {
             action.push(name)
@@ -310,34 +310,34 @@ class Kubectl
         return this.command(action.concat(flags), done)
     }
 
-    public portForward(name: string, portString: string, done?: (err, data)=>void)
+    public portForward(name: string, portString: string, done: (err: any, data: any)=>void)
     {
         if( this.type !== 'pods' )
             throw new Error('not a function')
 
-        var action = new Array('port-forward', name, portString)
+        var action: any = new Array('port-forward', name, portString)
 
         return this.command(action, done)
     }
 
-    public useContext(context: string, done?: (err, data)=>void)
+    public useContext(context: string, done: (err: any, data: any)=>void)
     {
-        var action = new Array('config', 'use-context', context)
+        var action: any = new Array('config', 'use-context', context)
         
         return this.command(action, done)
     }
 
-    public viewContext(done?: (err, data)=>void)
+    public viewContext(done: (err: any, data: any)=>void)
     {
-        var action = new Array('config', '--output=json', 'view')
+        var action: any = new Array('config', '--output=json', 'view')
         
         this.command(action, done)
     }
 }
 
-declare function require(name:string)
+declare function require(name:string): any
 
-export = (conf):any=>
+export = (conf: any):any=>
 {
 	return {
     // short names are just aliases to longer names
